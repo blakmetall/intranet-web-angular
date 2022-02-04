@@ -1,0 +1,84 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3">
+
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>
+                    {{ 'BRANDSITE_SECTIONS' | translate }}
+                </h1>
+            </div>
+            <hr>
+        </div>
+
+        <!-- search actions -->
+        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="15px">
+            <mat-form-field style="width: 100%;">
+                <input matInput #filter placeholder="{{ 'SEARCH' | translate }}" autocomplete="off">
+            </mat-form-field>
+
+            <div fxLayout="row">
+                <button mat-icon-button (click)="_dataSource.clear()" title="{{ 'RESET_SEARCH' | translate }}">
+                    <mat-icon >autorenew</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <mat-table [dataSource]="_dataSource" matSort >
+
+
+            <ng-container matColumnDef="name_es">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ 'NAME' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ row.name_es }} / {{ row.name_en }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="features">
+                <mat-header-cell *matHeaderCellDef class="pl-1">
+                    {{ 'CATEGORIES' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <div *ngIf="row.features" class="pt-1 pl-1 pb-1">
+                        <div *ngFor="let feature of row.features">
+                            {{ feature.name_es }} / {{ feature.name_en }}
+                        </div>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+
+                <mat-cell *matCellDef="let row" class="text-xs-right">
+                    <span class="app-spacer"></span>
+
+                    <button mat-icon-button [routerLink]="['form/' + row.id]">
+                        <mat-icon class="app-icon-small">edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="delete(row)" *ngIf="!row.is_predefined">
+                        <mat-icon class="app-icon-small">delete</mat-icon>
+                    </button>
+
+                </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns" class="mat-grey-200"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator
+                #paginator
+                [pageIndex]="_db.pageIndex"
+                [length]="_db.totalItems"
+                [pageSizeOptions]="[20, 50, 100, 150, 200, 10]">
+
+        </mat-paginator>
+    </mat-card>
+
+</mat-card-content>

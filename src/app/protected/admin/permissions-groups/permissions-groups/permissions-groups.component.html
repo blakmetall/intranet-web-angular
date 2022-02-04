@@ -1,0 +1,108 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3">
+
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>{{ 'PERMISSIONS_GROUPS' | translate }}</h1>
+                <div>
+                    <button mat-icon-button [routerLink]="['form']">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+
+        <!-- search actions -->
+        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="15px">
+            <mat-form-field style="width: 100%;">
+                <input matInput #filter placeholder="{{ 'SEARCH' | translate }}" autocomplete="off">
+            </mat-form-field>
+
+            <div fxLayout="row">
+                <button mat-icon-button (click)="_dataSource.clear()" title="{{ 'RESET_SEARCH' | translate }}">
+                    <mat-icon >autorenew</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <mat-table [dataSource]="_dataSource" matSort >
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ 'NAME' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ row.name | translate }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="permissions">
+                <mat-header-cell *matHeaderCellDef>
+                    {{ 'SECTIONS' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="pt-1 pb-1">
+                    <div *ngIf="row.permissions && row.permissions.length">
+                        <div *ngFor="let permission of row.permissions"
+                             matTooltip="{{ permission.name | translate}}">
+                            <a color="primary" [routerLink]="['permissions/' + row.id + '/form/' + permission.id]">
+                                {{ permission.slug }}
+                            </a>
+                        </div>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="is_administrative_group">
+                <mat-header-cell *matHeaderCellDef>
+                    {{ 'IS_ADMINISTRATIVE_GROUP' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <span *ngIf="row.is_administrative_group">
+                        {{ 'YES' | translate }}
+                    </span>
+
+                    <span *ngIf="!row.is_administrative_group">
+                        {{ 'NO' | translate }}
+                    </span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+
+                <mat-cell *matCellDef="let row" class="text-xs-right">
+                    <span class="app-spacer"></span>
+
+                    <button mat-icon-button [routerLink]="['permissions/' + row.id]">
+                        <mat-icon class="app-icon-small">vpn_key</mat-icon>
+                    </button>
+                    <button mat-icon-button [routerLink]="['form/' + row.id]">
+                        <mat-icon class="app-icon-small">edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="delete(row)">
+                        <mat-icon class="app-icon-small">delete</mat-icon>
+                    </button>
+
+                </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns" class="mat-grey-200"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator
+                #paginator
+                [pageIndex]="_db.pageIndex"
+                [length]="_db.totalItems"
+                [pageSizeOptions]="[20, 50, 100, 150, 200, 10]">
+
+        </mat-paginator>
+    </mat-card>
+
+</mat-card-content>

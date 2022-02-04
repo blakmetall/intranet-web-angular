@@ -1,0 +1,62 @@
+
+<mat-list *ngIf="folderProvider.files">
+    <mat-list-item *ngFor="let file of folderProvider.files">
+
+        <mat-icon mat-list-icon
+                  *ngIf="!file.is_image"
+                  style="margin-left:6px; margin-right: 2px; color: gray;"
+                  class="app-cursor-pointer">
+            note
+        </mat-icon>
+
+        <img mat-list-avatar [src]="file.url" *ngIf="file.is_image && !file.media">
+        <img mat-list-avatar [src]="file.media['small-square'].url"
+             *ngIf="file.is_image && file.media && file.media['small-square']">
+
+
+        <h4 mat-line>
+            <b>{{file.original_name}}</b>
+        </h4>
+
+        <p mat-line class="file-date">
+            {{ dateProvider.fromUTCtoTZ(file.created_at) | amDateFormat: 'YYYY-MM-DD h:mm a' }}
+        </p>
+
+        <div mat-line-end>
+            <div fxLayout="row" fxLayoutGap="15px">
+                <div fxLayout="row" fxLayoutGap="15px" class="actions-wrapper">
+
+                    <!-- featured flag -->
+                    <mat-icon matTooltip="{{ 'FEATURED' | translate }}" color="warn" *ngIf="file.is_featured">star</mat-icon>
+
+                    <a target="_blank" [href]="download_base_url + file.id + '/' + file.slug" matTooltip="{{ 'DOWNLOAD' | translate }}">
+                        <mat-icon>cloud_download</mat-icon>
+                    </a>
+
+                    <a (click)="fileViewerProvider.load(file)" matTooltip="{{ 'VIEW' | translate }}">
+                        <mat-icon>visibility</mat-icon>
+                    </a>
+
+                    <!-- brandsite url flip page -->
+                    <a [href]="brandsite_url + '/presentation/' + file.slug"
+                       [target]="_blank"
+                       matTooltip="{{ 'FLIP_PAGE' | translate }}"
+                       *ngIf="file.extension == 'pdf' && file.flip_page_enabled">
+                        <mat-icon>view_carousel</mat-icon>
+                    </a>
+
+                    <a (click)="editFile(file)" matTooltip="{{ 'EDIT' | translate }}">
+                        <mat-icon>edit</mat-icon>
+                    </a>
+
+                    <a (click)="deleteFile( file )" matTooltip="{{ 'DELETE' | translate }}">
+                        <mat-icon>delete</mat-icon>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+    </mat-list-item>
+</mat-list>
+

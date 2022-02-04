@@ -1,0 +1,206 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3">
+
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>
+                    <span *ngIf="id"> {{ 'EDIT_HOTEL' | translate }}</span>
+                    <span *ngIf="!id">{{ 'NEW_HOTEL' | translate }}</span>
+                </h1>
+                <div>
+                    <button mat-icon-button title="{{ 'NEW' | translate }}" (click)="redirect.toForm(id, route)" *ngIf="id">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                    <button mat-icon-button title="{{ 'RETURN_TO_LISTING' | translate }}" (click)="redirect.toListing(id, route)">
+                        <mat-icon>list</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="save()" autocomplete="off">
+
+
+
+            <mat-card-title class="mat-text-primary">
+                {{ 'HOTEL_DATA' | translate }}
+            </mat-card-title>
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'NAME' | translate }}" [formControl]="form.get('name')">
+            </mat-form-field>
+            <small *ngIf="form.get('name').hasError('required') && form.get('name').touched" class="mat-text-warn">
+                {{ 'FIELD_REQUIRED' | translate }}
+            </small>
+
+            <mat-form-field>
+                <mat-select [formControl]="form.get('stars')" placeholder="{{ 'STARS' |translate }}">
+                    <mat-option [value]="1">1</mat-option>
+                    <mat-option [value]="2">2</mat-option>
+                    <mat-option [value]="3">3</mat-option>
+                    <mat-option [value]="4">4</mat-option>
+                    <mat-option [value]="5">5</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'WEBSITE' | translate }}" [formControl]="form.get('website')">
+            </mat-form-field>
+            <small *ngIf="form.get('website').hasError('url') && form.get('website').touched" class="mat-text-warn">
+                {{ 'INSERT_A_VALID_URL' | translate }}
+            </small>
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'EMAIL' | translate }}" [formControl]="form.get('email')">
+            </mat-form-field>
+            <small *ngIf="form.get('email').hasError('email') && form.get('email').touched" class="mat-text-warn">
+                {{ 'INSERT_A_VALID_EMAIL' | translate }}
+            </small>
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'PHONE' | translate }}" [formControl]="form.get('phone')">
+            </mat-form-field>
+
+            <div class="app-checkbox-container pt-1">
+                <mat-checkbox color="primary" [formControl]="form.get('is_enabled')">
+                    {{ 'ENABLED' | translate }}
+                </mat-checkbox>
+            </div>
+
+
+
+
+            <div class="mt-3 mb-3"></div>
+            <mat-card-title class="mat-text-primary">
+                {{ 'SOCIAL_NETWORKS' | translate }}
+            </mat-card-title>
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'Facebook' | translate }}" [formControl]="form.get('social_facebook')">
+            </mat-form-field>
+            <small *ngIf="form.get('social_facebook').hasError('url') && form.get('social_facebook').touched" class="mat-text-warn">
+                {{ 'INSERT_A_VALID_URL' | translate }}
+            </small>
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'Twitter' | translate }}" [formControl]="form.get('social_twitter')">
+            </mat-form-field>
+            <small *ngIf="form.get('social_twitter').hasError('url') && form.get('social_twitter').touched" class="mat-text-warn">
+                {{ 'INSERT_A_VALID_URL' | translate }}
+            </small>
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'Instagram' | translate }}" [formControl]="form.get('social_instagram')">
+            </mat-form-field>
+            <small *ngIf="form.get('social_instagram').hasError('url') && form.get('social_instagram').touched" class="mat-text-warn">
+                {{ 'INSERT_A_VALID_URL' | translate }}
+            </small>
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'Youtube' | translate }}" [formControl]="form.get('social_youtube')">
+            </mat-form-field>
+            <small *ngIf="form.get('social_youtube').hasError('url') && form.get('social_youtube').touched" class="mat-text-warn">
+                {{ 'INSERT_A_VALID_URL' | translate }}
+            </small>
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'Pinterest' | translate }}" [formControl]="form.get('social_pinterest')">
+            </mat-form-field>
+            <small *ngIf="form.get('social_pinterest').hasError('url') && form.get('social_pinterest').touched" class="mat-text-warn">
+                {{ 'INSERT_A_VALID_URL' | translate }}
+            </small>
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'LinkedIn' | translate }}" [formControl]="form.get('social_linkedin')">
+            </mat-form-field>
+            <small *ngIf="form.get('social_linkedin').hasError('url') && form.get('social_linkedin').touched" class="mat-text-warn">
+                {{ 'INSERT_A_VALID_URL' | translate }}
+            </small>
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'Tripadvisor' | translate }}" [formControl]="form.get('social_tripadvisor')">
+            </mat-form-field>
+            <small *ngIf="form.get('social_tripadvisor').hasError('url') && form.get('social_tripadvisor').touched" class="mat-text-warn">
+                {{ 'INSERT_A_VALID_URL' | translate }}
+            </small>
+
+
+
+
+
+            <div class="mt-3 mb-3" *ngIf="!id || (id && hotel && hotel.address)">
+                <app-address [parentForm]="form" (addressForm)="form.get('address').patchValue( $event.value )">
+                </app-address>
+            </div>
+            <div class="mt-3 mb-3"></div>
+
+
+
+            <!-- logo -->
+            <hr class="mb-2">
+            <div fxLayout="row" fxLayoutGap="100px" fxLayoutAlign="space-between" class="pb-1">
+                <div>
+                    <mat-card-title class="mat-text-primary">
+                        {{ 'LOGO' | translate }}
+                    </mat-card-title>
+                    <input type="file" ng2FileSelect [uploader]="logo_uploader">
+                </div>
+                <div *ngIf="hotel?.logo" class="app-img-wrapper">
+                    <a (click)="fileViewerProvider.load(hotel.logo)">
+                        {{ hotel.logo.name }}
+                        <mat-icon color="primary">visibility</mat-icon>
+
+                        <div *ngIf="hotel.logo.is_image && hotel.logo.media">
+                            <img [src]='hotel.logo.media["small"].url' alt="" class="app-img">
+                        </div>
+                        <div *ngIf="hotel.logo.is_image && !hotel.logo.media">
+                            <img [src]='hotel.logo.url' alt="" class="app-img">
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+
+            <!-- presentation image -->
+            <hr class="mb-2">
+            <div fxLayout="row" fxLayoutGap="100px" fxLayoutAlign="space-between">
+                <div>
+                    <mat-card-title class="mat-text-primary">
+                        {{ 'PRESENTATION_IMAGE' | translate }}
+                    </mat-card-title>
+                    <input type="file" ng2FileSelect [uploader]="presentation_file_uploader">
+                </div>
+                <div *ngIf="hotel?.presentation_file" class="app-img-wrapper">
+                    <a (click)="fileViewerProvider.load(hotel.presentation_file)">
+                        {{ hotel.presentation_file.name }}
+                        <mat-icon color="primary">visibility</mat-icon>
+
+                        <div *ngIf="hotel.presentation_file.is_image && hotel.presentation_file.media">
+                            <img [src]='hotel.presentation_file.media["small"].url' alt="" class="app-img">
+                        </div>
+                        <div *ngIf="hotel.presentation_file.is_image && !hotel.presentation_file.media">
+                            <img [src]='hotel.presentation_file.url' alt="" class="app-img">
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- bottom actions -->
+            <hr class="mt-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start" class="pt-2 app-bottom-actions">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+                    {{ (!id) ? ('ADD' | translate) : ('UPDATE' | translate) }}
+                </button>
+            </div>
+
+        </form>
+    </mat-card>
+
+
+</mat-card-content>
+
+<app-loader [loading]="loading"></app-loader>

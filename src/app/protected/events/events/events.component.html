@@ -1,0 +1,83 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <span fxFlex fxHide="false" fxHide.gt-xs>
+            {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}
+        </span>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row>
+        
+        <span fxFlex fxShow="false" fxShow.gt-xs>
+            {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}
+        </span>
+
+        <span fxFlex fxHide="false" fxHide.gt-xs></span>
+
+        <button mat-icon-button [routerLink]="['form']" matTooltip="{{ 'NEW_EVENT' | translate }}">
+            <mat-icon>add</mat-icon>
+        </button>
+
+        <button mat-icon-button [routerLink]="['categories/']" matTooltip="{{ 'CATEGORIES' | translate }}">
+            <mat-icon>scatter_plot</mat-icon>
+        </button>
+
+
+        <!-- calendar view swap -->
+        <!--
+        <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="{{ 'CHANGE_CALENDAR_VIEW' | translate }}">
+            <mat-icon>{{ viewIcon }}</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)=" view='month'; viewIcon = 'view_module' ">
+                <mat-icon>view_module</mat-icon>
+                <span>{{ 'MONTH' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)=" view='week'; viewIcon = 'view_week' ">
+                <mat-icon>view_week</mat-icon>
+                <span>{{ 'WEEK' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)=" view='day'; viewIcon = 'view_day' ">
+                <mat-icon>view_day</mat-icon>
+                <span>{{ 'DAY' | translate }}</span>
+            </button>
+        </mat-menu>
+        -->
+        <!-- end calendar view -->
+
+        <button mat-icon-button mwlCalendarPreviousView matTooltip="{{ 'PREV_MONTH' | translate }}" [disabled]="isLoading"
+                [view]="view"
+                [(viewDate)]="viewDate">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <button mat-icon-button mwlCalendarToday matTooltip="{{ 'CURRENT_MONTH' | translate }}" [disabled]="isLoading"
+                [(viewDate)]="viewDate">
+            <mat-icon>today</mat-icon>
+        </button>
+
+        <button mat-icon-button mwlCalendarNextView matTooltip="{{ 'NEXT_MONTH' | translate }}" [disabled]="isLoading"
+                [view]="view"
+                [(viewDate)]="viewDate">
+            <mat-icon>chevron_right</mat-icon>
+        </button>
+
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-card>
+    <div [ngSwitch]="view" ui-calendar ng-model="eventSources" *ngIf="calendar">
+
+        <mwl-calendar-month-view
+                *ngSwitchCase="'month'"
+                [viewDate]="viewDate"
+                [events]="calendar"
+                [refresh]="refresh"
+                [activeDayIsOpen]="activeDayIsOpen"
+
+                (beforeViewRender)="beforeMonthViewRender($event)"
+                (dayClicked)="dayClicked($event.day)">
+        </mwl-calendar-month-view>
+
+    </div>
+</mat-card>

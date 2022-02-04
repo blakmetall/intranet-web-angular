@@ -1,0 +1,103 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3">
+
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>
+                    <span *ngIf="id"> {{ 'EDIT_ARTICLE' | translate }}</span>
+                    <span *ngIf="!id">{{ 'NEW_ARTICLE' | translate }}</span>
+
+                    <span class="subtitle" *ngIf="edition">
+                        {{ 'EDITION' | translate }}:
+                        {{ edition.name }}
+                    </span>
+                    <span class="subtitle" *ngIf="section">
+                        {{ 'SECTION' | translate }}:
+                        {{ section.name }}
+                    </span>
+
+                </h1>
+                <div *ngIf="edition && section">
+                    <button mat-icon-button title="{{ 'NEW' | translate }}"
+                            *ngIf="id"
+                            [routerLink]="'/admin/mahgazine/edition/' + edition.id + '/sections/' + section.id + '/articles/form'">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                    <button mat-icon-button title="{{ 'RETURN_TO_LISTING' | translate }}"
+                            [routerLink]="'/admin/mahgazine/edition/' + edition.id + '/sections/' + section.id + '/articles'">
+                        <mat-icon>list</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="save()" autocomplete="off">
+
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'TITLE' | translate }}" [formControl]="form.get('name')">
+            </mat-form-field>
+            <small *ngIf="form.get('name').hasError('required') && form.get('name').touched" class="mat-text-warn">
+                {{ 'FIELD_REQUIRED' | translate }}
+            </small>
+
+            <mat-form-field>
+                <textarea matInput placeholder="{{ 'CONTENT' | translate }}"
+                          matTextareaAutosize matAutosizeMinRows="3" matAutosizeMaxRows="10"
+                          [formControl]="form.get('description')"></textarea>
+            </mat-form-field>
+            <small *ngIf="form.get('description').hasError('required') && form.get('description').touched"
+                   class="mat-text-warn">
+                {{ 'FIELD_REQUIRED' | translate }}
+            </small>
+
+            <mat-form-field *ngIf="hotels">
+                <mat-select placeholder="{{ 'HOTEL' | translate }}" [formControl]="form.get('hotel_id')">
+                    <mat-option *ngFor="let hotel of hotels" [value]="hotel.id">
+                        {{ hotel.name | translate }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- cover image -->
+            <hr class="mb-2">
+            <div fxLayout="row" fxLayoutGap="100px" fxLayoutAlign="space-between">
+                <div>
+                    <mat-card-title class="mat-text-primary">
+                        {{ 'IMAGE' | translate }}
+                    </mat-card-title>
+                    <input type="file" ng2FileSelect [uploader]="article_file_uploader">
+                </div>
+                <div *ngIf="article?.article_file" class="app-img-wrapper">
+                    <a (click)="fileViewerProvider.load(article.article_file)">
+                        {{ article.article_file.name }}
+                        <mat-icon color="primary">visibility</mat-icon>
+
+                        <div *ngIf="article.article_file.is_image && article.article_file.media">
+                            <img [src]='article.article_file.media["small"].url' alt="" class="app-img">
+                        </div>
+                        <div *ngIf="article.article_file.is_image && !article.article_file.media">
+                            <img [src]='article.article_file.url' alt="" class="app-img">
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- bottom actions -->
+            <hr class="mt-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start" class="pt-2 app-bottom-actions">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+                    {{ (!id) ? ('ADD' | translate) : ('UPDATE' | translate) }}
+                </button>
+            </div>
+
+        </form>
+    </mat-card>
+
+
+</mat-card-content>
+
+<app-loader [loading]="(loading || loading2 || loading3 || loading4)"></app-loader>

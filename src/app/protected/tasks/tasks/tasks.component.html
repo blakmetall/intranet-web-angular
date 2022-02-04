@@ -1,0 +1,99 @@
+<mat-card-content style="padding: 5px;">
+    <mat-card class="pa-2 mb-3">
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>{{ 'TASKS_BOARD' | translate }}</h1>
+                <div>
+                    <button mat-icon-button title="{{ 'ADD_NEW' | translate }}"  [routerLink]="['form']">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+
+                    <button mat-icon-button title="{{ 'GO_TO_ARCHIVED' | translate }}"  [routerLink]="['/tasks/archive']">
+                        <mat-icon>archive</mat-icon>
+                    </button>
+                    <button mat-icon-button title="{{ 'GO_TO_CALENDAR' | translate }}"  [routerLink]="['/calendar']">
+                        <mat-icon>event</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+        <div class="taskboard page-height">
+            <div class="taskboard-wrapper" *ngFor="let column of columns">
+                <div class="taskboard-list">
+                    <div class="taskboard-header text-uppercase">
+                        <strong>{{ column.name | translate }}</strong>
+                    </div>
+                    <div class="taskboard-cards" [dragula]="'TASKS'" [attr.data-status]="column.slug">
+
+                        <div *ngFor="let task of tasks" [attr.data-id]="task.id">
+                            <div class="taskboard-task" *ngIf="task.status.slug == column.slug">
+
+                                <div class="taskboard-task-title">
+                                    <strong style="font-size: 14px;">
+                                        {{ task.name }}
+                                    </strong>
+                                </div>
+
+                                <hr>
+                                <p *ngIf="task.description">
+                                    {{ task.description.length > 100 ? (task.description | slice:0:100) + '...' : task.description }}
+                                </p>
+
+                                <hr>
+                                <div class="task-start-date-wrapper">
+                                    <span *ngIf="authProvider.user.id != task.user_owner?.id">
+                                        <b class="app-uppercase">{{ 'CREATED_BY' | translate }}:</b> {{ task.user_owner?.profile?.full_name }}
+                                        <br>
+                                    </span>
+                                    <b class="app-uppercase">{{ 'ASSIGNED' | translate }}:</b> {{ task.user_assigned?.profile?.full_name }}
+                                    <br>
+                                    <b class="app-uppercase">{{ 'START_DATE' | translate }}:</b> {{ task.start_date }}
+                                    <br>
+                                    <span *ngIf="task.end_date && task.status?.slug == 'finished' ">
+                                        <b class="app-uppercase">{{ 'END_DATE' | translate }}:</b> {{ task.end_date }}
+                                    </span>
+                                </div>
+
+                                <!-- task actions -->
+                                <button class="app-task-settings" mat-icon-button [matMenuTriggerFor]="menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item [routerLink]="['view/' + task.id]">
+                                        <mat-icon>visibility</mat-icon>
+                                        <span>{{ 'VIEW' | translate }}</span>
+                                    </button>
+                                    <button mat-menu-item [routerLink]="['form/' + task.id]">
+                                        <mat-icon>edit</mat-icon>
+                                        <span>{{ 'EDIT' | translate }}</span>
+                                    </button>
+                                    <button mat-menu-item (click)="archive(task)">
+                                        <mat-icon>archive</mat-icon>
+                                        <span>{{ 'ARCHIVE' | translate}}</span>
+                                    </button>
+                                    <div *ngIf="task.owner_user_id ==  currentUser.id || task.assigned_user_id == currentUser.id" class="inline-block">
+                                        <button mat-menu-item (click)="delete(task)" >
+                                            <mat-icon>delete</mat-icon>
+                                            <span>{{ 'DELETE' | translate}}</span>
+                                        </button>
+                                    </div>
+                                </mat-menu>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </mat-card>
+</mat-card-content>
+
+<app-loader [loading]="loading"></app-loader>

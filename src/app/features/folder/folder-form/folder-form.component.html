@@ -1,0 +1,60 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <span *ngIf="id"> {{ 'EDIT_FOLDER' | translate }}</span>
+        <span *ngIf="!id">{{ 'NEW_FOLDER' | translate }}</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content>
+    <mat-card>
+        <form [formGroup]="form" (ngSubmit)="save()" class="mb-2" autocomplete="off">
+            <mat-form-field>
+                <input matInput placeholder="{{ 'NAME' | translate }}" [formControl]="form.get('name')">
+            </mat-form-field>
+            <small *ngIf="form.get('name').hasError('required') && form.get('name').touched" class="mat-text-warn">
+                {{ 'FIELD_REQUIRED' | translate }}
+            </small>
+
+            <!-- featured checkbox -->
+            <div class="app-checkbox-container">
+                <mat-checkbox color="primary" [formControl]="form.get('is_featured')">
+                    {{ 'FEATURED' | translate }}
+                    <mat-icon class="app-inline-icon">star</mat-icon>
+                </mat-checkbox>
+            </div>
+
+            <!-- permission assignment -->
+            <div class="app-checkbox-container">
+                <mat-checkbox color="primary" [formControl]="form.get('is_private')">
+                    {{ 'PRIVATE_FOLDER' | translate }}
+                    <mat-icon class="app-inline-icon">lock</mat-icon>
+                </mat-checkbox>
+            </div>
+
+            <div *ngIf="form.get('is_private').value">
+                <hr>
+                <h3>{{ 'USERS' | translate }}</h3>
+
+                <div fromGroup="settings">
+                    <div *ngFor="let userOption of form.get('settings')['controls']['folderPermissions']['controls']; let i=index">
+
+                        <div [formGroup]="userOption" class="app-checkbox-container">
+                            <mat-checkbox formControlName="is_permitted" color="primary">
+                                {{ userOption.get('name').value }} {{ userOption.get('lastname').value }}
+                            </mat-checkbox>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-1 mb-1"></div>
+
+            <div class="pt-2">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+                    {{ (!id) ? ('ADD' | translate) : ('UPDATE' | translate) }}
+                </button>
+            </div>
+        </form>
+    </mat-card>
+</mat-dialog-content>

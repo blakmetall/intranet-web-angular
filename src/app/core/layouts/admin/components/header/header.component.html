@@ -1,0 +1,77 @@
+<mat-toolbar class="main-header" color="primary">
+
+    <button (click)="toggleSidenav.emit()" mat-icon-button>
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <div class="branding">
+        <div class="logo"></div>
+    </div>
+
+    <div class="search-bar" fxFlex>
+        <!--<form class="search-form" [ngStyle.xs]="{display: 'none'}">
+            <mat-icon>search</mat-icon>
+            <input type="text" placeholder="Search" autofocus="true"/>
+        </form>-->
+    </div>
+
+    <div class="header-time-and-zone" *ngIf="time && date">
+        {{ time }} |
+        <span matTooltip="YYYY-MM-DD">
+            {{ date }}
+        </span>
+    </div>
+
+    <div style="display: inline-block; width: 0.5px; height: 20px; background: #977b9c; margin-right: 10px;" class="ml-2">
+    </div>
+
+    <button mat-icon-button class="ml-xs overflow-visible" [routerLink]="['/chat']">
+        <mat-icon *ngIf="chatProvider.has_messages">mail</mat-icon>
+        <mat-icon *ngIf="!chatProvider.has_messages">mail_outline</mat-icon>
+
+        <span class="notification-label" *ngIf="chatProvider.pending_messages">
+            {{ chatProvider.pending_messages }}
+        </span>
+    </button>
+
+    <button (click)="toggleNotificationSidenav.emit()" mat-icon-button class="ml-xs overflow-visible">
+
+        <mat-icon *ngIf="notificationProvider.notifications.length">notifications</mat-icon>
+        <mat-icon *ngIf="!notificationProvider.notifications.length">notifications_none</mat-icon>
+
+        <span class="notification-label" *ngIf="notificationProvider.pending_view > 0">
+            {{ notificationProvider.pending_view }}
+        </span>
+    </button>
+
+    <button [matMenuTriggerFor]="langMenu" mat-icon-button class="ml-xs">
+        <mat-icon>language</mat-icon>
+    </button>
+
+    <mat-menu #langMenu="matMenu" x-position="before">
+        <button type="button" mat-menu-item (click)="setLanguage('en')">
+            {{ 'ENGLISH' | translate }}
+        </button>
+
+        <button type="button" mat-menu-item (click)="setLanguage('es')">
+            {{ 'SPANISH' | translate }}
+        </button>
+    </mat-menu>
+
+    <button [matMenuTriggerFor]="userMenu" mat-icon-button class="ml-xs">
+        <mat-icon>person</mat-icon>
+    </button>
+
+    <mat-menu #userMenu="matMenu" x-position="before">
+        <button mat-menu-item [routerLink]="['/', 'profile']">
+            <mat-icon>account_box</mat-icon>
+            {{ 'PROFILE' | translate }}
+        </button>
+
+        <button mat-menu-item (click)="logout()">
+            <mat-icon>exit_to_app</mat-icon>
+            {{ 'SIGN_OUT' | translate }}
+        </button>
+    </mat-menu>
+
+</mat-toolbar>

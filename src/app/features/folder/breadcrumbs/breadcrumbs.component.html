@@ -1,0 +1,13 @@
+<mat-chip-list *ngIf="folderProvider.breadcrumbs && folderProvider.breadcrumbs.length">
+
+    <div *ngFor="let folder of folderProvider.breadcrumbs; let i = index;" class="inline-block">
+
+        <mat-chip (click)="changeFolder( folder.id )"
+                  [color]=" (i == folderProvider.breadcrumbs.length - 1) ? 'primary': '' "
+                  [selected]=" (i == folderProvider.breadcrumbs.length - 1) ? true : false ">
+            {{ folder.name }}
+        </mat-chip>
+
+    </div>
+
+</mat-chip-list>

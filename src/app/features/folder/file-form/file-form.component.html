@@ -1,0 +1,68 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <span>{{ 'FILE_UPDATE' | translate }}</span>
+    </mat-toolbar-row>
+
+    <!-- queue progress -->
+    <mat-progress-bar mode="determinate" value="{{uploader.progress}}"></mat-progress-bar>
+</mat-toolbar>
+
+<mat-dialog-content>
+    <mat-card-content>
+
+        <div class="mt-1 mb-3" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+            <input type="file" ng2FileSelect [uploader]="uploader" class=""/>
+            <div>
+                <img [src]="file.url" class="file-img" *ngIf="file.is_image">
+            </div>
+        </div>
+
+        <div class="queue-container">
+            <h4 class="mt-0" [formGroup]="form">
+
+                <!-- featured checkbox -->
+                <div class="app-checkbox-container">
+                    <mat-checkbox color="primary" [formControl]="form.get('is_featured')">
+                        {{ 'FEATURED' | translate }}
+                        <mat-icon class="app-inline-icon">star</mat-icon>
+                    </mat-checkbox>
+                </div>
+
+                <!-- flip page -->
+                <div class="app-checkbox-container" *ngIf="file.extension == 'pdf'">
+                    <mat-checkbox color="primary" [formControl]="form.get('flip_page_enabled')">
+                        {{ 'FLIP_PAGE' | translate }}
+                        <mat-icon class="app-inline-icon">view_carousel</mat-icon>
+                    </mat-checkbox>
+                </div>
+
+                <hr class="mb-1">
+
+                <!-- features list -->
+                <div *ngFor="let feature of form.get('features')['controls']; let i=index">
+                    <div [formGroup]="feature" class="app-checkbox-container">
+                        <mat-checkbox formControlName="enabled" color="primary">
+                        <span *ngIf="translate.currentLang == 'es'">
+                            {{ feature.get('name_es').value}}
+                        </span>
+                            <span *ngIf="translate.currentLang == 'en'">
+                            {{ feature.get('name_en').value}}
+                        </span>
+                        </mat-checkbox>
+                    </div>
+                </div>
+
+            </h4>
+        </div>
+
+    </mat-card-content>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button type="button" color="primary" mat-raised-button mat-button-sm (click)="update()">
+        {{ 'UPDATE' | translate }}
+    </button>
+    <button type="button" mat-raised-button mat-button-sm [mat-dialog-close]="true">
+        {{ 'CLOSE' | translate }}
+    </button>
+</mat-dialog-actions>

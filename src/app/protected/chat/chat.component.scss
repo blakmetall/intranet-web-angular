@@ -1,0 +1,147 @@
+@import "../../../assets/styles/scss/components/chat";
+
+:host {
+  margin-left: -5px;
+  margin-right: -5px;
+  margin-top: -5px;
+  display: block;
+
+
+  .selected-user{
+    text-align: right;
+    font-size: 15px !important;
+    padding-right: 20px;
+  }
+
+  .chat-conversation-window{
+    height: 550px;
+    overflow: auto;
+  }
+
+  .chat-conversation-message > p{
+    word-wrap: break-word;
+  }
+
+  .scroll-container{
+    position: relative;
+    max-height: 550px;
+  }
+
+  .search-form-block{
+    input{
+      font-size: 14px !important;
+      border-bottom: 1px solid #dadada;
+      padding: 0 0 0 5px;
+      box-sizing: border-box;
+
+      width: 100%;
+      box-sizing: border-box;
+      height: 30px;
+      padding: 0 10px;
+      width: 90%;
+      margin-right: 15px;
+      border: 1px solid #dadada;
+    }
+    input:focus{
+      outline: none;
+    }
+    mat-icon{
+      font-size: 15px;
+    }
+  }
+
+  .unread-checkbox{
+    position: absolute;
+    font-size: 12px;
+
+    input{
+      margin-right: 5px;
+    }
+  }
+
+  .user-pending-message{
+    position: absolute;
+    right: 15px;
+    top: 18px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  .user-list-item{
+    border-bottom: 1px solid #f1f1f1;
+
+    h3{
+      padding-right: 25px;
+    }
+
+    .user-enterprise{
+      color: gray;
+      text-transform: capitalize;
+    }
+  }
+
+  .send-input{
+    width: 100%;
+    box-sizing: border-box;
+    margin-right: 10px;
+    height: 40px;
+    position: relative;
+    top: 10px;
+    padding: 0 10px;
+    font-size: 14px;
+  }
+  .send-input:focus{
+    outline: none;
+  }
+  .send-button{
+    position: relative;
+    top: 8px;
+  }
+
+  mat-sidenav-container {
+    hr {
+      width: 100%;
+    }
+  }
+
+  .mat-card-actions {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 8px 15px 8px 32px;
+  }
+
+
+  /* chat original styles */
+
+  .mat-sidenav, .mat-drawer-content {
+    padding: 0;
+    overflow-x: hidden;
+  }
+  md-toolbar + hr, md-card-content + hr {
+    margin-left: -5px;
+    margin-right: -5px;
+  }
+
+  $mat-toolbar-height-desktop: 64px !default;
+  $mat-toolbar-height-mobile-portrait: 56px !default;
+  $mat-toolbar-height-mobile-landscape: 48px !default;
+
+  .mat-card-top {
+    margin-top: -($mat-toolbar-height-desktop);
+  }
+
+  @media ($mat-xsmall) and (orientation: portrait) {
+    .mat-card-top {
+      margin-top: -($mat-toolbar-height-mobile-portrait);
+    }
+  }
+
+  @media ($mat-small) and (orientation: landscape) {
+    .mat-card-top {
+      margin-top: -($mat-toolbar-height-mobile-landscape);
+    }
+  }
+
+}
+

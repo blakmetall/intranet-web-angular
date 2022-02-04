@@ -1,0 +1,55 @@
+:host {
+  margin-left: -5px;
+  margin-right: -5px;
+  margin-top: -5px;
+  display: block;
+  height: calc(100vh - 96px);
+
+  .taskboard {
+    height: 100%;
+  }
+
+  .taskboard.page-height{
+    overflow: auto;
+  }
+
+  .taskboard-task{
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+
+    .app-task-settings{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    .taskboard-task-title{
+      padding-right: 30px;
+      padding-bottom: 10px;
+    }
+
+    .task-start-date-wrapper{
+      padding-top: 0px;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+  }
+
+  .taskboard-task > p{
+    padding-top: 10px;
+  }
+
+  .taskboard-task:first-child{
+    margin-top: 10px;
+  }
+  .gu-mirror {
+    background-color: white;
+    border-radius: 0.125rem;
+    padding: 0.5rem;
+    opacity: 1;
+  }
+
+
+
+}
+

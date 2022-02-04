@@ -1,0 +1,21 @@
+<mat-dialog-content>
+    <div *ngIf="msg">
+        <p>{{ msg | translate }}</p>
+    </div>
+
+    <div *ngIf="!msg">
+        <p *ngIf="!forceDelete">{{ 'CONFIRM_DELETE' | translate }}</p>
+
+        <p *ngIf="forceDelete">{{ 'CONFIRM_FORCE_DELETE' | translate }}</p>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" mat-dialog-close (click)="confirm()">
+        {{ 'CONFIRM' | translate }}
+    </button>
+
+    <button mat-button color="secondary" (click)="cancel()">
+        {{ 'CANCEL' | translate }}
+    </button>
+</mat-dialog-actions>

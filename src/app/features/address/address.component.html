@@ -1,0 +1,58 @@
+
+<form [formGroup]="form" autocomplete="off">
+
+    <!-- ||||| ADDRESS DATA -->
+    <mat-card-title class="mat-text-primary">
+        {{ 'ADDRESS' | translate }}
+    </mat-card-title>
+
+    <mat-form-field *ngIf="countries">
+        <mat-select [formControl]="form.get('country_id')" placeholder="{{ 'COUNTRY' |translate }}">
+            <mat-option>{{ 'COUNTRY' | translate }}</mat-option>
+            <mat-option *ngFor="let country of countries" [value]="country.id">
+                {{ country.name | translate }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-select [formControl]="form.get('state_id')" placeholder="{{ 'STATE' |translate }}">
+            <mat-option>{{ 'STATE' | translate }}</mat-option>
+            <mat-option *ngFor="let state of states" [value]="state.id">
+                {{ state.name | translate }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field>
+        <input matInput placeholder="{{ 'MUNICIPALITY_COUNTY' | translate }}" [formControl]="form.get('municipality_or_county')">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="{{ 'COLONY' | translate }}" [formControl]="form.get('colony')">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="{{ 'STREET' | translate }}" [formControl]="form.get('street')">
+    </mat-form-field>
+    <small *ngIf="form.get('street').hasError('required') && form.get('street').touched" class="mat-text-warn">
+        {{ 'FIELD_REQUIRED' | translate }}
+    </small>
+
+    <mat-form-field>
+        <input matInput placeholder="{{ 'EXTERIOR_NUMBER' | translate }}" [formControl]="form.get('exterior_number')">
+    </mat-form-field>
+    <small *ngIf="form.get('exterior_number').hasError('required') && form.get('exterior_number').touched" class="mat-text-warn">
+        {{ 'FIELD_REQUIRED' | translate }}
+    </small>
+
+    <mat-form-field>
+        <input matInput placeholder="{{ 'INTERIOR_NUMBER' | translate }}" [formControl]="form.get('interior_number')">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="{{ 'ZIP' | translate }}" [formControl]="form.get('zip')">
+    </mat-form-field>
+
+</form>

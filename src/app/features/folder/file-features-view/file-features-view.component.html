@@ -1,0 +1,24 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        {{ 'FEATURES' | translate }}
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content>
+    <mat-card>
+        <mat-list *ngIf="file && file.features && file.features.length">
+            <mat-list-item *ngFor="let feature of file.features">
+                <h4 mat-line >
+                    <b *ngIf="translate.currentLang == 'en'">{{feature.name_en}}</b>
+                    <b *ngIf="translate.currentLang == 'es'">{{feature.name_es}}</b>
+                </h4>
+            </mat-list-item>
+        </mat-list>
+    </mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button type="button" mat-raised-button mat-button-sm [mat-dialog-close]="true">
+        {{ 'CLOSE' | translate }}
+    </button>
+</mat-dialog-actions>

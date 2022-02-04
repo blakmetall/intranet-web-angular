@@ -1,0 +1,118 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3">
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>{{ 'EXTERNAL_COMPANIES' | translate }}</h1>
+                <div>
+                    <button mat-icon-button [routerLink]="['form']">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+        <!-- search actions -->
+        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="15px">
+            <mat-form-field style="width: 100%;">
+                <input matInput #filter placeholder="{{ 'SEARCH' | translate }}" autocomplete="off">
+            </mat-form-field>
+
+            <div fxLayout="row">
+                <button mat-icon-button (click)="_dataSource.trashToggle()" title="{{ 'RECYCLE_BIN' | translate }}">
+                    <mat-icon color="{{_db.trash ? 'primary' : ''}}">delete_sweep</mat-icon>
+                </button>
+                <button mat-icon-button (click)="_dataSource.clear()" title="{{ 'RESET_SEARCH' | translate }}">
+                    <mat-icon >autorenew</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <mat-table [dataSource]="_dataSource" matSort >
+
+            <ng-container matColumnDef="is_enabled">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ 'ENABLED' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <button color="primary" mat-icon-button *ngIf="row.is_enabled">
+                        <mat-icon class="app-icon-small">check_circle_outline</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="!row.is_enabled">
+                        <mat-icon class="app-icon-small">cancel</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ 'NAME' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ row.name }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ 'PHONE' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ row.phone }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ 'EMAIL' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ row.email }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+
+                <mat-cell *matCellDef="let row" class="text-xs-right">
+                    <span class="app-spacer"></span>
+
+                    <div *ngIf="!row.deleted_at">
+                        <button mat-icon-button [routerLink]="['form/' + row.id]">
+                            <mat-icon class="app-icon-small">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="delete(row)">
+                            <mat-icon class="app-icon-small">delete</mat-icon>
+                        </button>
+                    </div>
+
+                    <div *ngIf="row.deleted_at">
+                        <button mat-icon-button (click)="restore(row)" title="{{ 'RESTORE' | translate }}">
+                            <mat-icon class="app-icon-small">restore</mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="delete(row, true)" title="{{ 'DELETE_COMPLETELY' | translate }}">
+                            <mat-icon class="app-icon-small">delete_forever</mat-icon>
+                        </button>
+                    </div>
+
+                </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns" class="mat-grey-200"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator
+                #paginator
+                [pageIndex]="_db.pageIndex"
+                [length]="_db.totalItems"
+                [pageSizeOptions]="[20, 50, 100, 150, 200, 10]">
+
+        </mat-paginator>
+    </mat-card>
+
+</mat-card-content>

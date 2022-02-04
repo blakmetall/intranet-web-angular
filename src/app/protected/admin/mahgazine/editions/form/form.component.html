@@ -1,0 +1,111 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3">
+
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>
+                    <span *ngIf="id"> {{ 'EDIT_EDITION' | translate }}</span>
+                    <span *ngIf="!id">{{ 'NEW_EDITION' | translate }}</span>
+                </h1>
+                <div>
+                    <button mat-icon-button title="{{ 'NEW' | translate }}" (click)="redirect.toForm(id, route)" *ngIf="id">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                    <button mat-icon-button title="{{ 'RETURN_TO_LISTING' | translate }}" (click)="redirect.toListing(id, route)">
+                        <mat-icon>list</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="save()" autocomplete="off">
+
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'TITLE' | translate }}" [formControl]="form.get('name')">
+            </mat-form-field>
+            <small *ngIf="form.get('name').hasError('required') && form.get('name').touched" class="mat-text-warn">
+                {{ 'FIELD_REQUIRED' | translate }}
+            </small>
+
+            <!-- start date and time -->
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field>
+                    <input matInput [formControl]="form.get('start_date')" [matDatepicker]="picker1"
+                           placeholder="{{ 'START_DATE' | translate }}">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field >
+                    <input matInput [ngxTimepicker]="start_time" [formControl]="form.get('start_time')"
+                           placeholder="{{ 'START_HOUR' | translate }}" [format]="24">
+                    <ngx-material-timepicker #start_time></ngx-material-timepicker>
+                </mat-form-field>
+            </div>
+
+            <!-- end date and time -->
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field>
+                    <input matInput [formControl]="form.get('end_date')" [matDatepicker]="picker2"
+                           placeholder="{{ 'END_DATE' | translate }}">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput [ngxTimepicker]="end_time" [formControl]="form.get('end_time')"
+                           placeholder="{{ 'END_HOUR' | translate }}" [format]="24">
+                    <ngx-material-timepicker #end_time></ngx-material-timepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="app-checkbox-container pt-1">
+                <mat-checkbox color="primary" [formControl]="form.get('is_published')">
+                    {{ 'IS_PUBLISHED' | translate }}
+                </mat-checkbox>
+            </div>
+
+
+            <!-- cover image -->
+            <hr class="mb-2">
+            <div fxLayout="row" fxLayoutGap="100px" fxLayoutAlign="space-between">
+                <div>
+                    <mat-card-title class="mat-text-primary">
+                        {{ 'COVER_IMAGE' | translate }}
+                    </mat-card-title>
+                    <input type="file" ng2FileSelect [uploader]="cover_file_uploader">
+                </div>
+                <div *ngIf="edition?.cover_file" class="app-img-wrapper">
+                    <a (click)="fileViewerProvider.load(edition.cover_file)">
+                        {{ edition.cover_file.name }}
+                        <mat-icon color="primary">visibility</mat-icon>
+
+                        <div *ngIf="edition.cover_file.is_image && edition.cover_file.media">
+                            <img [src]='edition.cover_file.media["small"].url' alt="" class="app-img">
+                        </div>
+                        <div *ngIf="edition.cover_file.is_image && !edition.cover_file.media">
+                            <img [src]='edition.cover_file.url' alt="" class="app-img">
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- bottom actions -->
+            <hr class="mt-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start" class="pt-2 app-bottom-actions">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+                    {{ (!id) ? ('ADD' | translate) : ('UPDATE' | translate) }}
+                </button>
+            </div>
+
+        </form>
+    </mat-card>
+
+
+</mat-card-content>
+
+<app-loader [loading]="loading"></app-loader>

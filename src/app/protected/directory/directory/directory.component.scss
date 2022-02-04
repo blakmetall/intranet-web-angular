@@ -1,0 +1,75 @@
+:host {
+  mat-list-item {
+
+    padding-top: 15px;
+    text-transform: uppercase;
+    font-size: 10px;
+
+    h4 {
+      font-size: 12px;
+      font-weight: bold;
+      margin-right: 10px;
+      color: #333;
+
+    }
+
+    .directory-data {
+      margin: 0 0 16px;
+      font-size: 12px;
+
+      .separator{
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        padding: 0 15px;
+        font-size: 11px;
+        position: relative;
+        top: -1px;
+      }
+
+      mat-icon{
+        font-size: 11px;
+        margin-right: -10px;
+        position: relative;
+        top: 1px;
+      }
+    }
+
+    .user-disabled{
+      color: #777777;
+      font-weight: normal;
+      font-size: 12px;
+      margin-left: 5px;
+      position: relative;
+      top: -1px;
+    }
+
+    .company-color {
+      font-weight: bold;
+    }
+  }
+
+  .directory-search-wrapper {
+    display: inline-block;
+    position: relative;
+    right: 30px;
+    top: 10px;
+
+    .directory-search {
+      font-size: 14px;
+      padding: 10px 10px 10px 5px;
+      display: block;
+      width: 150px;
+      border: none;
+      border-bottom: 1px solid #757575;
+    }
+    .directory-search:focus {
+      outline: none;
+    }
+  }
+
+  mat-list-item:first-child{
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+}

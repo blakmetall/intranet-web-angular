@@ -1,0 +1,289 @@
+@import "scss/components/calendar";
+@import "scss/material.variables";
+@import "scss/material.themes";
+@import "scss/mixins/bi-app/bi-app-ltr";
+// Core Variables and Mixins
+@import "scss/app.variables";
+@import "scss/mixins";
+// Core Styles
+@import "scss/core";
+@import "scss/material";
+@import "scss/utilities/utilities";
+@import "scss/intranet/_backgrounds";
+
+@import "../../assets/styles/scss/components/taskboard";
+
+.app-spacer{
+  flex: 1 1 auto;
+}
+
+.app-mandatory-fields {
+  font-size: 11px;
+  span {
+    font-weight: bold;
+    font-size: 13px;
+  }
+}
+
+.app-link{
+  text-decoration: underline;
+}
+
+// app icons sizes
+.app-icon-tiny{ font-size: 15px; }
+.app-icon-small{ font-size: 18px; }
+.app-icon-medium{ font-size: 21px; }
+.app-icon-large{ font-size: 24px; }
+
+// app text aligments
+.text-center{ text-align: center; }
+.text-right{ text-align: right; }
+.text-left{ text-align: left; }
+.text-justify{ text-align: justify; }
+
+
+// app font transforms
+.app-uppercase{ text-transform: uppercase;}
+.app-capitalize{ text-transform: capitalize;}
+.app-lowercase{ text-transform: lowercase;}
+
+// app text colors
+.text-white { color: white; }
+.text-dark-grey { color: #5e5e5e; }
+
+// widths and heights
+.width-100{ width: 100%; }
+
+// app elements sizes and widths
+.app-checkbox-container{
+  splay: flex;
+  align-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+// error messages from inputs
+small.mat-text-warn{
+  position: relative;
+  top: -15px;
+  clear: both;
+}
+
+
+// material design form field, width override
+.mat-form-field{ width: 100%; }
+
+
+
+// mat snackbar colors
+.mat-snack-bar-container{
+  color: #ce93e2;
+}
+
+.error-snackbar, .error-snackbar .mat-simple-snackbar-action {
+  color: #ff8130;
+}
+
+.app-sign-in-logo{
+    width: 100%;
+    max-width: 180px;
+}
+
+/** Mat File Tree **/
+.app-tree-container{
+  width: 100%;
+  max-width: 300px;
+  overflow: auto;
+
+  .app-tree-invisible {
+    display: none;
+  }
+
+  .app-tree{
+    width: 200px;
+
+    .app-tree-icon{
+      font-size: 18px;
+    }
+  }
+
+  .app-tree ul,
+  .app-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+}
+.mat-tree-node{ /** override mat tree css **/
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+.app-icon-heart.app-icon-small{
+  width: 17px !important;
+}
+
+.app-cursor-pointer:hover{
+  cursor: pointer;
+}
+
+.app-inline-icon{
+  position: relative;
+  font-size: 18px;
+  top: 3px;
+  margin-right: 3px;
+}
+
+.app-file-img{
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+.w100{
+  width: 100%;
+}
+
+a.disabled{
+  color: #d8d8d8;
+}
+
+
+/** ngx Material Timepcker **/
+
+.timepicker {
+
+  .timepicker__header {
+    background-color: #552d5d !important;
+  }
+
+  .clock-face__clock-hand {
+    background-color: #552d5d !important;
+
+    &::after {
+      background-color: #552d5d !important;
+    }
+
+    &::before {
+      border-color: #552d5d !important;
+    }
+  }
+
+  .clock-face__number {
+    > span.active {
+      background-color: #552d5d !important;
+    }
+  }
+
+  button:not(.timepicker-dial__item) {
+    color: #552d5d !important;
+  }
+
+}
+
+.mat-cell{
+  font-size: 12px;
+  padding: 0 8px 0 0;
+}
+
+.header-time-and-zone{
+  font-size: 14px;
+  position: relative;
+
+  .header-date-format{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: #f1f1f1;
+  }
+}
+
+.app-img-wrapper{
+  text-align: right;
+
+  a{
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  mat-icon{
+    font-size: 16px;
+    position: relative;
+    top: 4px;
+    left: 5px;
+  }
+  .app-img{
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.10);
+    width: 100%;
+    max-width: 250px;
+    position: relative;
+    top: 15px;
+    right: 25px;
+  }
+}
+
+.app-img-wrapper.left{
+  text-align: left;
+}
+
+.mat-dialog-actions {
+  // ...
+  &[align='end'] {
+    justify-content: flex-end;
+  }
+
+  &[align='center'] {
+    justify-content: center;
+  }
+}
+
+.app-file-viewer-wrapper{
+  img{
+    max-width: 100%;
+  }
+}
+
+.app-heading-wrapper{
+  h1{
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 20px;
+    position: relative;
+    top: 6px;
+
+    .subtitle{
+      display: block;
+      color: rgb(156, 156, 156);
+      font-size: 12px;
+      position: relative;
+      margin-top: -9px;
+    }
+  }
+}
+.app-heading-wrapper > div{
+  position: relative;
+  top: -4px;
+}
+
+.app-bottom-actions{
+  padding-bottom: 10px !important;
+
+  button{
+    text-transform: uppercase;
+    margin-right: 15px;
+  }
+  button:last-child{
+    margin-right: 0;
+  }
+}
+
+
+.row-dates-wrapper{
+  p:last-child{
+    margin-bottom: 0;
+  }
+}
+
+.app-render-nl{
+  white-space: pre-wrap;
+}

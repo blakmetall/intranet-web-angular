@@ -1,0 +1,80 @@
+<mat-card-content>
+    <mat-card class="pb-2 mb-3">
+
+
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>{{ 'DIRECTORY' | translate }}</h1>
+                <div>
+                    <div class="directory-search-wrapper">
+                        <mat-form-field>
+                            <input matInput placeholder="{{ 'NAME' | translate }}" [(ngModel)]="search" (ngModelChange)="searchDirectory($event)">
+                        </mat-form-field>
+                    </div>
+
+                    <mat-radio-group class="example-radio-group text-md">
+                        <mat-radio-button
+                                color="primary"
+                                style="margin: 10px; font-size: 14px;"
+                                class="example-radio-button text-md"
+                                *ngFor="let option of filterOptions"
+                                [value]="option.value"
+                                [checked]="option.checked"
+                                (change)="filterDirectory(option)" >
+                            {{ option.name | translate }}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+
+
+        <div *ngIf="directory">
+            <mat-list>
+                <mat-list-item *ngFor="let user of directory; let i = index;">
+                    <h4>
+                        {{ user.profile.full_name }}
+
+                        <span *ngIf="!user.is_enabled" class="user-disabled">
+                            ( {{ 'USER_DISABLED' | translate }} )
+                        </span>
+                    </h4>
+                    <span class="app-spacer"></span>
+                    <div class="directory-data">
+
+                        <div class="inline-block">
+                            <mat-icon color="warn">email</mat-icon>
+                            {{ user.email }}
+                        </div>
+
+                        <div class="inline-block" *ngIf="user.profile.phone">
+                            <div class="separator">/</div>
+                            <mat-icon color="warn">phone</mat-icon>
+                            {{ user.profile.phone }}
+                        </div>
+
+                        <div class="inline-block" *ngIf="user.profile.is_external && user.profile.company">
+                            <div class="separator">/</div>
+                            <mat-icon color="warn">business</mat-icon>
+                            {{ user.profile.company.name }}
+                        </div>
+
+                        <div class="inline-block" *ngIf="!user.profile.is_external && user.profile.hotel">
+                            <div class="separator">/</div>
+                            <mat-icon color="warn">business</mat-icon>
+                            {{ user.profile.hotel.name }}
+                        </div>
+
+                    </div>
+                    <mat-divider></mat-divider>
+                </mat-list-item>
+            </mat-list>
+        </div>
+
+
+    </mat-card>
+</mat-card-content>

@@ -1,0 +1,148 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3">
+
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>
+                    <span *ngIf="id"> {{ 'EDIT_ASSURANCE_VISIT' | translate }}</span>
+                    <span *ngIf="!id">{{ 'NEW_ASSURANCE_VISIT' | translate }}</span>
+                </h1>
+                <div>
+                    <button mat-icon-button title="{{ 'NEW' | translate }}" (click)="redirect.toForm(id, route)" *ngIf="id">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                    <button mat-icon-button title="{{ 'RETURN_TO_LISTING' | translate }}" (click)="redirect.toListing(id, route)">
+                        <mat-icon>list</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+
+        <form [formGroup]="form" (ngSubmit)="save()" autocomplete="off">
+
+
+
+            <mat-card-title class="mat-text-primary">
+                {{ 'ASSURANCE_VISIT' | translate }}
+            </mat-card-title>
+
+            <mat-form-field *ngIf="hotels">
+                <mat-select [formControl]="form.get('hotel_id')" placeholder="{{ 'HOTEL' | translate }}">
+                    <mat-option *ngFor="let hotel of hotels" [value]="hotel.id">
+                        {{ hotel.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="statusList">
+                <mat-select [formControl]="form.get('quality_assurance_visit_category_id')"
+                            placeholder="{{ 'STATUS' | translate }}">
+                    <mat-option *ngFor="let status of statusList" [value]="status.id">
+                        {{ status.name | translate }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- date and time -->
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field>
+                    <input matInput [formControl]="form.get('date')" [matDatepicker]="datepicker1"
+                           placeholder="{{ 'DATE' | translate }}">
+                    <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
+                    <mat-datepicker #datepicker1></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field >
+                    <input matInput [ngxTimepicker]="timepicker1" [formControl]="form.get('time')"
+                           placeholder="{{ 'HOUR' | translate }}" [format]="24">
+                    <ngx-material-timepicker #timepicker1></ngx-material-timepicker>
+                </mat-form-field>
+            </div>
+
+            <mat-form-field>
+                <input matInput type="number" placeholder="{{ 'REVISION_NUMBER' | translate }}"
+                       [formControl]="form.get('revision_number')">
+            </mat-form-field>
+            <small *ngIf="form.get('revision_number').hasError('required') && form.get('revision_number').touched"
+                   class="mat-text-warn">
+                {{ 'INVALID_VALUE' | translate }}
+            </small>
+
+            <mat-form-field>
+                <input matInput type="number" placeholder="{{ 'SCORE' | translate }}"
+                       [formControl]="form.get('score')">
+            </mat-form-field>
+
+
+            <div class="mt-3 mb-3"></div>
+
+
+            <!-- logo -->
+            <hr class="mb-2">
+            <div fxLayout="row" fxLayoutGap="100px" fxLayoutAlign="space-between" class="pb-1">
+                <div>
+                    <mat-card-title class="mat-text-primary">
+                        {{ 'NOTIFICATION_FILE' | translate }}
+                    </mat-card-title>
+                    <input type="file" ng2FileSelect [uploader]="notification_file_uploader">
+                </div>
+                <div *ngIf="assurance_visit?.notification_file" class="app-img-wrapper">
+                    <a (click)="fileViewerProvider.load(assurance_visit.notification_file)">
+                        {{ assurance_visit.notification_file.name }}
+                        <mat-icon color="primary">visibility</mat-icon>
+
+                        <div *ngIf="assurance_visit.notification_file.is_image && assurance_visit.notification_file.media">
+                            <img [src]='assurance_visit.notification_file.media["small"].url' alt="" class="app-img">
+                        </div>
+                        <div *ngIf="assurance_visit.notification_file.is_image && !assurance_visit.notification_file.media">
+                            <img [src]='assurance_visit.notification_file.url' alt="" class="app-img">
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- presentation image -->
+            <hr class="mb-2">
+            <div fxLayout="row" fxLayoutGap="100px" fxLayoutAlign="space-between">
+                <div>
+                    <mat-card-title class="mat-text-primary">
+                        {{ 'REPORT_FILE' | translate }}
+                    </mat-card-title>
+                    <input type="file" ng2FileSelect [uploader]="report_file_uploader">
+                </div>
+                <div *ngIf="assurance_visit?.report_file" class="app-img-wrapper">
+                    <a (click)="fileViewerProvider.load(assurance_visit.report_file)">
+                        {{ assurance_visit.report_file.name }}
+                        <mat-icon color="primary">visibility</mat-icon>
+
+                        <div *ngIf="assurance_visit.report_file.is_image && assurance_visit.report_file.media">
+                            <img [src]='assurance_visit.report_file.media["small"].url' alt="" class="app-img">
+                        </div>
+                        <div *ngIf="assurance_visit.report_file.is_image && !assurance_visit.report_file.media">
+                            <img [src]='assurance_visit.report_file.url' alt="" class="app-img">
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+            <!-- bottom actions -->
+            <hr class="mt-3">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start" class="pt-2 app-bottom-actions">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+                    {{ (!id) ? ('ADD' | translate) : ('UPDATE' | translate) }}
+                </button>
+            </div>
+
+
+
+        </form>
+    </mat-card>
+
+</mat-card-content>
+
+<app-loader [loading]="loading"></app-loader>

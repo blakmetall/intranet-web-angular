@@ -1,0 +1,98 @@
+
+<!-- public menu (depends on permissions anyway) -->
+<mat-nav-list appAccordion class="navigation">
+    <mat-list-item appAccordionLink *ngFor="let option of menuService.get().public" group="{{ 'public-' + option.state }}">
+
+        <a appAccordionToggle class="relative" [routerLink]="['/', option.state]"
+           *ngIf="option.type === 'link' && (!option.requires_access || (option.requires_access && auth.isUrlAllowed(option.access_url)))">
+            <mat-icon>{{ option.icon }}</mat-icon>
+            <span>{{ option.name | translate }}</span>
+            <span fxFlex></span>
+            <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of option.badge">
+                {{ badge.value }}
+            </span>
+        </a>
+
+        <a appAccordionToggle class="relative" href="{{option.state}}" *ngIf="option.type === 'extLink'">
+            <mat-icon>{{ option.icon }}</mat-icon>
+            <span>{{ option.name | translate }}</span>
+            <span fxFlex></span>
+            <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of option.badge">{{ badge.value }}</span>
+        </a>
+
+        <a appAccordionToggle class="relative" href="{{option.state}}" target="_blank"
+           *ngIf="option.type === 'extTabLink'">
+            <mat-icon>{{ option.icon }}</mat-icon>
+            <span>{{ option.name | translate }}</span>
+            <span fxFlex></span>
+            <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of option.badge">{{ badge.value }}</span>
+        </a>
+
+        <a appAccordionToggle class="relative" href="javascript:;"
+           *ngIf="option.type === 'sub' && (!option.requires_access || (option.requires_access && auth.isUrlAllowed(option.access_url)))">
+            <mat-icon>{{ option.icon }}</mat-icon>
+            <span>{{ option.name | translate }}</span>
+            <span fxFlex></span>
+            <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of option.badge">{{ badge.value }}</span>
+            <mat-icon class="menu-caret">arrow_drop_down</mat-icon>
+        </a>
+
+        <mat-nav-list class="sub-menu"
+                      *ngIf="option.type === 'sub' && (!option.requires_access || (option.requires_access && auth.isUrlAllowed(option.access_url)))">
+            <mat-list-item *ngFor="let childitem of option.children" routerLinkActive="open">
+                <a [routerLink]="['/', option.state, childitem.state ]" class="relative">
+                    {{ childitem.name | translate }}
+                </a>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-nav-list>
+
+<!-- admin menu -->
+<mat-nav-list appAccordion class="navigation">
+    <mat-list-item appAccordionLink *ngFor="let option of menuService.get().admin" group="{{ 'admin-' + option.state}}">
+
+        <a appAccordionToggle class="relative" [routerLink]="['/admin/', option.state]"
+           *ngIf="option.type === 'link' && (!option.requires_access || (option.requires_access && auth.isUrlAllowed(option.access_url)))">
+            <mat-icon>{{ option.icon }}</mat-icon>
+            <span>{{ option.name | translate }}</span>
+            <span fxFlex></span>
+            <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of option.badge">{{ badge.value }}</span>
+        </a>
+
+        <a appAccordionToggle class="relative" href="{{option.state}}" *ngIf="option.type === 'extLink'">
+            <mat-icon>{{ option.icon }}</mat-icon>
+            <span>{{ option.name | translate }}</span>
+            <span fxFlex></span>
+            <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of option.badge">{{ badge.value }}</span>
+        </a>
+
+        <a appAccordionToggle class="relative" href="{{option.state}}" target="_blank"
+           *ngIf="option.type === 'extTabLink'">
+            <mat-icon>{{ option.icon }}</mat-icon>
+            <span>{{ option.name | translate }}</span>
+            <span fxFlex></span>
+            <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of option.badge">{{ badge.value }}</span>
+        </a>
+
+        <a appAccordionToggle class="relative" href="javascript:;"
+           *ngIf="option.type === 'sub' && (!option.requires_access || (option.requires_access && auth.isUrlAllowed(option.access_url)))">
+            <mat-icon>{{ option.icon }}</mat-icon>
+            <span>{{ option.name | translate }}</span>
+            <span fxFlex></span>
+            <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of option.badge">{{ badge.value }}</span>
+            <mat-icon class="menu-caret">arrow_drop_down</mat-icon>
+        </a>
+
+        <mat-nav-list class="sub-menu"
+                      *ngIf="option.type === 'sub' && (!option.requires_access || (option.requires_access && auth.isUrlAllowed(option.access_url)))">
+            <mat-list-item *ngFor="let childitem of option.children" routerLinkActive="open">
+                <a [routerLink]="['/admin/', option.state, childitem.state ]" class="relative">
+                    {{ childitem.name | translate }}
+                </a>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-nav-list>

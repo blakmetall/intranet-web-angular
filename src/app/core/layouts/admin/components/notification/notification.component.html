@@ -1,0 +1,54 @@
+<mat-tab-group [selectedIndex]="1" mat-stretch-tabs>
+    <mat-tab>
+        <ng-template matTabLabel>{{ 'NOTIFICATIONS' | translate }}</ng-template>
+        <div class="scroll">
+            <mat-nav-list>
+                <div *ngFor="let notification of notificationProvider.notifications">
+                    <mat-list-item [ngClass]="{ 'pending': !notification.viewed }" (click)="view(notification)">
+
+                        <mat-icon color="primary" class="app-icon-small" mat-list-avatar *ngIf="notification.type == 'task'">
+                            view_week
+                        </mat-icon>
+
+                        <mat-icon color="primary" class="app-icon-small" mat-list-avatar *ngIf="notification.type == 'event'">
+                            event
+                        </mat-icon>
+
+                        <mat-icon color="primary" class="app-icon-small" mat-list-avatar *ngIf="notification.type == 'quality'">
+                            check_box
+                        </mat-icon>
+
+                        <mat-icon color="primary" class="app-icon-small" mat-list-avatar *ngIf="notification.type == 'user'">
+                            person
+                        </mat-icon>
+
+                        <h4 matLine>{{ notification.title | translate }}</h4>
+
+                        <span class="text-md mat-text-muted" matLine>
+                            {{ dateProvider.fromUTCtoTZ(notification.created_at) | amDateFormat: 'YYYY-MM-DD h:mm a' }}
+                        </span>
+
+                        <div>
+                            <mat-icon color="secondary" class="app-icon-small delete-icon" (click)="delete($event, notification)">
+                                cancel
+                            </mat-icon>
+                        </div>
+                    </mat-list-item>
+                </div>
+
+                <mat-list-item *ngIf="notificationProvider.notifications.length">
+                    <mat-icon color="primary" class="hidden" mat-list-avatar>notifications_none</mat-icon>
+
+                    <h4 matLine>{{ 'DELETE_NOTIFICATIONS' | translate }}</h4>
+
+                    <div>
+                        <mat-icon color="secondary" class="app-icon-small delete-icon" (click)="deleteAll()">
+                            cancel
+                        </mat-icon>
+                    </div>
+                </mat-list-item>
+
+            </mat-nav-list>
+        </div>
+    </mat-tab>
+</mat-tab-group>

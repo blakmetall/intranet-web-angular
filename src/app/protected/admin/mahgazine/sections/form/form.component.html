@@ -1,0 +1,89 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3">
+
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>
+                    <span *ngIf="id"> {{ 'EDIT_SECTION' | translate }}</span>
+                    <span *ngIf="!id">{{ 'NEW_SECTION' | translate }}</span>
+
+                    <span class="subtitle" *ngIf="edition">
+                        {{ 'EDITION' | translate }}:
+                        {{ edition.name }}
+                    </span>
+                </h1>
+                <div *ngIf="edition">
+                    <button mat-icon-button title="{{ 'NEW' | translate }}"
+                            [routerLink]="'/admin/mahgazine/edition/' + edition.id + '/sections/form'" *ngIf="section">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                    <button mat-icon-button title="{{ 'RETURN_TO_LISTING' | translate }}"
+                            [routerLink]="'/admin/mahgazine/edition/' + edition.id + '/sections'">
+                        <mat-icon>list</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="save()" autocomplete="off">
+
+
+            <mat-form-field>
+                <input matInput placeholder="{{ 'NAME' | translate }}" [formControl]="form.get('name')">
+            </mat-form-field>
+            <small *ngIf="form.get('name').hasError('required') && form.get('name').touched" class="mat-text-warn">
+                {{ 'FIELD_REQUIRED' | translate }}
+            </small>
+
+            <div>
+                <mat-form-field style="max-width: 200px;">
+                    <mat-icon matPrefix class="pr-1" [style.color]="form.get('color').value">
+                        brightness_1
+                    </mat-icon>
+                    <input matInput
+                           [formControl]="form.get('color')"
+                           [value]="form.get('color').value"
+                           [cpOKButton]="true"
+                           [(colorPicker)]="color"
+                           [cpAlphaChannel]="'disabled'"
+                           [cpOutputFormat]="'hex'"
+                           (colorPickerChange)="setColor($event)"
+                           placeholder="{{'COLOR' | translate}}"
+                    />
+                </mat-form-field>
+                <div>
+                    <small *ngIf="form.get('color').hasError('required') && form.get('color').touched" class="mat-text-warn">
+                        {{ 'FIELD_REQUIRED' | translate }}
+                    </small>
+                </div>
+            </div>
+
+            <mat-form-field>
+                <mat-select placeholder="{{ 'TEMPLATE' | translate }}" [formControl]="form.get('template_slug')">
+                    <mat-option *ngFor="let template of appProvider.mahgazine_templates" [value]="template.slug">
+                        {{ template.name | translate }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <small *ngIf="form.get('template_slug').hasError('required') && form.get('template_slug').touched" class="mat-text-warn">
+                {{ 'FIELD_REQUIRED' | translate }}
+            </small>
+
+            <!-- bottom actions -->
+            <hr class="mt-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start" class="pt-2 app-bottom-actions">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+                    {{ (!id) ? ('ADD' | translate) : ('UPDATE' | translate) }}
+                </button>
+            </div>
+
+        </form>
+    </mat-card>
+
+
+</mat-card-content>
+
+<app-loader [loading]="(loading || loading2)"></app-loader>

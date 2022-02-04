@@ -1,0 +1,106 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3">
+
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>{{ 'EXENSION_REQUESTS' | translate }}</h1>
+            </div>
+            <hr>
+        </div>
+
+
+        <!-- search actions -->
+        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="15px">
+            <mat-form-field style="width: 100%;">
+                <input matInput #filter placeholder="{{ 'SEARCH' | translate }}" autocomplete="off">
+            </mat-form-field>
+        </div>
+
+        <mat-table [dataSource]="_dataSource" matSort>
+
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    #
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ row.id }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="hotel">
+                <mat-header-cell *matHeaderCellDef>
+                    {{ 'HOTEL' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ row.hotel }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="owner">
+                <mat-header-cell *matHeaderCellDef>
+                    {{ 'CREATED_BY' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ row.owner?.profile?.full_name }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="is_verified">
+                <mat-header-cell *matHeaderCellDef>
+                    {{ 'STATUS' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <div *ngIf="row.is_verified">
+                        <div *ngIf="row.is_approved">
+                            {{ 'APPROVED' | translate }}
+                        </div>
+                        <div *ngIf="!row.is_approved">
+                            {{ 'DENIED' | translate }}
+                        </div>
+                    </div>
+                    <div *ngIf="!row.is_verified">
+                        {{ 'PENDING_REVIEW' | translate }}
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="created_at">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ 'CREATED_AT' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ dateProvider.fromUTCtoTZ(row.created_at) | amDateFormat: 'YYYY-MM-DD' }} <br>
+                    {{ dateProvider.fromUTCtoTZ(row.created_at) | amDateFormat: 'h:mm a' }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let row" class="text-xs-right">
+                    <span class="app-spacer"></span>
+                    <button mat-icon-button [routerLink]="['view/' + row.id]">
+                        <mat-icon class="app-icon-small">visibility</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="delete(row)">
+                        <mat-icon class="app-icon-small">delete</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns" class="mat-grey-200"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator
+                #paginator
+                [pageIndex]="_db.pageIndex"
+                [length]="_db.totalItems"
+                [pageSizeOptions]="[20, 50, 100, 150, 200, 10]">
+
+        </mat-paginator>
+    </mat-card>
+
+</mat-card-content>

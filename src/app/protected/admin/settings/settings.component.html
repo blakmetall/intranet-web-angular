@@ -1,0 +1,37 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <span> {{ 'SETTINGS' | translate }}</span>
+        <span class="app-spacer"></span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+
+<mat-card-content>
+    <mat-card class="pa-1">
+        <form [formGroup]="form" (ngSubmit)="save()" class="mb-2" autocomplete="off">
+
+            <div class="mt-2"></div>
+
+            <!-- timezone -->
+            <!--<mat-form-field style="width: 100%">
+                <mat-select placeholder="{{ 'TIMEZONE' | translate }}" [formControl]="form.get('timezone')">
+                    <mat-option *ngFor="let timezone of timezones" [value]="timezone">
+                        {{ timezone }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>-->
+
+            <div class="mb-2"></div>
+
+            <div class="pt-2">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+                    {{ 'UPDATE' | translate }}
+                </button>
+                <div class="mt-1 mat-text-muted mandatory-fields">
+                    {{ 'MANTATORY_FIELDS_DISCLAIMER' | translate }}
+                </div>
+            </div>
+
+        </form>
+    </mat-card>
+</mat-card-content>

@@ -1,0 +1,109 @@
+
+<mat-list *ngIf="folderProvider.folders">
+    <mat-list-item *ngFor="let folder of folderProvider.folders">
+
+        <mat-icon mat-list-icon
+                  (click)="changeFolder( folder )"
+                  style="margin-left:6px; margin-right: 2px;"
+                  class="app-cursor-pointer">
+            folder
+        </mat-icon>
+
+        <h4 mat-line>
+            <a (click)="changeFolder( folder )">
+                <b>{{folder.name}}</b>
+            </a>
+        </h4>
+
+        <p mat-line class="folder-date">
+            {{ dateProvider.fromUTCtoTZ(folder.created_at) | amDateFormat: 'YYYY-MM-DD h:mm a' }}
+        </p>
+
+        <div mat-line-end>
+            <div fxLayout="row" fxLayoutGap="15px" class="actions-wrapper">
+
+                <!-- featured flag -->
+                <mat-icon matTooltip="{{ 'FEATURED' | translate }}" color="warn" *ngIf="folder.is_featured">star</mat-icon>
+
+                <!-- user ownership -->
+                <mat-icon matTooltip="{{ 'YOU_OWN_THIS_FOLDER' | translate }}" color="primary"
+                          *ngIf="folder.is_private && folderProvider.isOwner(folder)">
+                    perm_identity
+                </mat-icon>
+                <mat-icon color="primary"
+                          matTooltip="{{ 'CREATED_BY' | translate }} - {{ folder.owner.profile.name }} {{ folder.owner.profile.lastname }}"
+                          *ngIf="folder.is_private && !folderProvider.isOwner(folder)">
+                    supervisor_account
+                </mat-icon>
+
+                <mat-icon matTooltip="{{ 'PRIVATE_FOLDER' | translate }}" *ngIf="folder.is_private && !folderProvider.canOpen(folder)">
+                    lock
+                </mat-icon>
+
+                <mat-icon matTooltip="{{ 'ACCESS_GRANTED' | translate }}" color="primary"
+                          *ngIf="folder.is_private && folderProvider.canOpen(folder)">
+                    lock_open
+                </mat-icon>
+
+                <!-- folder options -->
+                <div fxLayout="row" fxLayoutGap="15px">
+                    <!-- open options -->
+                    <a (click)="changeFolder( folder )"
+                       *ngIf="folderProvider.canOpen(folder)"
+                       matTooltip="{{ 'OPEN' | translate }}">
+                        <mat-icon>folder_open</mat-icon>
+                    </a>
+                    <a class="disabled"
+                       *ngIf="!folderProvider.canOpen(folder)"
+                       matTooltip="{{ 'OPEN' | translate }}">
+                        <mat-icon>folder_open</mat-icon>
+                    </a>
+
+                    <!-- edit options -->
+                    <a (click)="editFolder( folder )"
+                       *ngIf="folderProvider.canEdit(folder)"
+                       matTooltip="{{ 'EDIT' | translate }}">
+                        <mat-icon>edit</mat-icon>
+                    </a>
+                    <a *ngIf="!folderProvider.canEdit(folder)"
+                       class="disabled"
+                       matTooltip="{{ 'EDIT' | translate }}">
+                        <mat-icon>edit</mat-icon>
+                    </a>
+
+                    <!-- delete options -->
+                    <a (click)="deleteFolder( folder )"
+                       *ngIf="folderProvider.canDelete(folder)"
+                       matTooltip="{{ 'DELETE' | translate }}">
+                        <mat-icon>delete</mat-icon>
+                    </a>
+                    <a *ngIf="!folderProvider.canDelete(folder)"
+                       class="disabled"
+                       matTooltip="{{ 'DELETE' | translate }}">
+                        <mat-icon>delete</mat-icon>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+    </mat-list-item>
+</mat-list>
+
+
+<mat-list *ngIf="(!folderProvider.folders || !folderProvider.folders.length) &&
+               (!folderProvider.files || !folderProvider.files.length) ">
+
+    <mat-list-item>
+        <h4 mat-line style="top: 6px;">
+            <b>
+                {{ 'FOLDER_IS_EMPTY' | translate }}
+            </b>
+        </h4>
+
+        <p mat-line></p>
+        <mat-divider></mat-divider>
+    </mat-list-item>
+
+</mat-list>
+

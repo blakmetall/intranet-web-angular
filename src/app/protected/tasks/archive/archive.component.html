@@ -1,0 +1,126 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3">
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>{{ 'TASKS_ARCHIVED' | translate }}</h1>
+                <div>
+                    <button mat-icon-button title="{{ 'NEW' | translate }}" [routerLink]="['/tasks/form']">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                    <button mat-icon-button title="{{ 'RETURN_TO_LISTING' | translate }}" [routerLink]="['/tasks']">
+                        <mat-icon>list</mat-icon>
+                    </button>
+                    <button mat-icon-button title="{{ 'RETURN_TO_CALENDAR' | translate }}"  [routerLink]="['/calendar']">
+                        <mat-icon>event</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+        <!-- search actions -->
+        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="15px">
+            <mat-form-field style="width: 100%;">
+                <input matInput #filter placeholder="{{ 'SEARCH' | translate }}" autocomplete="off">
+            </mat-form-field>
+        </div>
+        <mat-table [dataSource]="_dataSource" matSort>
+
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    #
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ row.id }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ 'NAME' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" >
+                    {{ row.name }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="start_date">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ 'START_DATE' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ row.start_date }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="end_date">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ 'END_DATE' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{ row.end_date }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="user_owner">
+                <mat-header-cell *matHeaderCellDef>
+                    {{ 'CREATED_BY' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" >
+                    <div *ngIf="row.user_owner.profile">
+                        {{ row.user_owner.profile.name + ' ' + row.user_owner.profile.lastname}}
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="user_assigned">
+                <mat-header-cell *matHeaderCellDef>
+                    {{ 'ASSIGNED' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" >
+                    <div *ngIf="row.user_assigned.profile">
+                        {{ row.user_assigned.profile.name + ' ' + row.user_assigned.profile.lastname}}
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" >
+
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+
+                <mat-cell *matCellDef="let row" class="text-xs-right" >
+                    <span class="app-spacer" ></span>
+
+                    <div *ngIf="!row.deleted_at" >
+
+                        <button mat-icon-button [routerLink]="['/tasks/view/' + row.id]">
+                            <mat-icon class="app-icon-small">visibility</mat-icon>
+                        </button>
+
+                        <button mat-icon-button [routerLink]="['/tasks/form/' + row.id]">
+                            <mat-icon class="app-icon-small">edit</mat-icon>
+                        </button>
+
+                        <button mat-icon-button (click)="delete(row)" [disabled]="row.owner" >
+                            <mat-icon class="app-icon-small">delete</mat-icon>
+                        </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns" class="mat-grey-200"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator
+                #paginator
+                [pageIndex]="_db.pageIndex"
+                [length]="_db.totalItems"
+                [pageSizeOptions]="[20, 50, 100, 150, 200, 10]">
+
+        </mat-paginator>
+    </mat-card>
+
+</mat-card-content>

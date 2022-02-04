@@ -1,0 +1,73 @@
+<div class="actions-container text-right">
+    <span class="app-spacer"></span>
+
+    <div class="search-button-container">
+        <button type="button" mat-icon-button (click)="toggleSearchBox()"
+                class="filesystem-search-button"
+                [ngClass]="{'enabled': searchBoxEnabled}"
+                matTooltip="{{ 'SEARCH' | translate }}">
+            <mat-icon>search</mat-icon>
+        </button>
+
+        <div class="filesystem-search-container" *ngIf="searchBoxEnabled">
+            <div [formGroup]="searchForm" fxLayout="column" fxLayoutGap="15px" class="text-left">
+                <mat-form-field>
+                    <input matInput placeholder="{{ 'SEARCH' | translate }}" [formControl]="searchForm.get('search')">
+                </mat-form-field>
+
+                <!-- is_private checkbox -->
+                <mat-checkbox color="primary" [formControl]="searchForm.get('is_private')">
+                    {{ 'PRIVATE_FOLDERS' | translate }}
+                    &nbsp;
+                    <mat-icon class="app-inline-icon">lock</mat-icon>
+                </mat-checkbox>
+
+
+                <div formArrayName="features" class="pt-2" style="border-top: 1px solid #44224b">
+                    <div  *ngFor="let feature of searchForm.get('features')['controls']; let i=index">
+                        <div [formGroup]="feature" class="app-checkbox-container">
+                            <mat-checkbox formControlName="is_enabled" color="primary">
+
+                                <div *ngIf="translate.currentLang == 'en'">
+                                    {{ feature.get('name_en').value }}
+                                </div>
+                                <div *ngIf="translate.currentLang == 'es'">
+                                    {{ feature.get('name_es').value }}
+                                </div>
+
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="search-filter-line"></div>
+
+            <button type="button"
+                    mat-stroked-button
+                    class="search-container-close"
+                    (click)="toggleSearchBox()"
+                    matTooltip="{{ 'SEARCH' | translate }}">
+                <mat-icon color="warn">close</mat-icon>
+
+                {{ 'CLOSE' | translate }}
+            </button>
+        </div>
+    </div>
+
+
+    <button type="button" mat-icon-button
+            (click)="loadFilesFormComponent()"
+            matTooltip="{{ 'FILE_UPLOADER' | translate }}">
+        <mat-icon>cloud_upload</mat-icon>
+    </button>
+
+    <button type="button" mat-icon-button
+            (click)="loadFolderFormComponent()"
+            matTooltip="{{ 'NEW_FOLDER' | translate }}">
+        <mat-icon>create_new_folder</mat-icon>
+    </button>
+
+
+</div>

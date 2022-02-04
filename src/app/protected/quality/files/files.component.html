@@ -1,0 +1,12 @@
+<mat-card-content>
+    <mat-card class="pa-2">
+        <!-- heading -->
+        <div class="app-heading-wrapper">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>{{ 'QUALITY_FILES' | translate }}</h1>
+            </div>
+        </div>
+    </mat-card>
+</mat-card-content>
+
+<app-folder [polymorphic_id]="polymorphic_id" [polymorphic_type]="polymorphic_type"></app-folder>

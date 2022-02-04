@@ -1,0 +1,184 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3" *ngIf="extension">
+
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>
+                    {{ extension.assuranceVisit?.hotel?.name }}
+                    <span class="subtitle">
+                        {{ 'EXTENSION_REQUEST' | translate }}
+                    </span>
+                </h1>
+                <div>
+                    <button mat-icon-button title="{{ 'RETURN_TO_LIST' | translate }}"  [routerLink]="['../../']">
+                        <mat-icon>list</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+
+
+        <div class="text-df">
+            <p>
+                <strong>{{ 'ID' | translate }}:</strong> {{ extension.assuranceVisit?.id }}
+            </p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'CREATED_BY' | translate}}:</strong>
+            <p>{{ extension.assuranceVisit?.user_owner?.profile?.full_name }}</p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'HOTEL' | translate}}:</strong>
+            <p>{{ extension.assuranceVisit?.hotel?.name }}</p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'STATUS' | translate}}:</strong>
+            <p>{{ extension.assuranceVisit?.status?.name | translate }}</p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'DATE' | translate}}:</strong>
+            <p>
+                {{ dateProvider.fromUTCtoTZ(extension.assuranceVisit?.datetime) | amDateFormat: 'YYYY-MM-DD h:mm a' }}
+            </p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{'REVISION_NUMBER' | translate }}:</strong>
+            <p>{{ extension.assuranceVisit?.revision_number }}</p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'SCORE' | translate}}:</strong>
+            <p>{{ extension.assuranceVisit?.score }}</p>
+        </div>
+
+
+        <div class="mb-3"></div>
+
+
+        <mat-card-title class="mat-text-primary">
+            {{ 'EXTENSION_REQUEST' | translate }}
+        </mat-card-title>
+
+        <div class="text-df">
+            <strong>{{ 'CREATED_BY' | translate}}:</strong>
+            <p>{{ extension.userOwner?.profile?.full_name }}</p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'EXTENSION_DATE' | translate}}:</strong>
+            <p>
+                {{ dateProvider.fromUTCtoTZ(extension.extension_date) | amDateFormat: 'YYYY-MM-DD h:mm a' }}
+            </p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'STATUS' | translate}}:</strong>
+            <p>
+                <span *ngIf="!extension.is_verified">
+                    {{ 'PENDING_REVIEW' | translate }}
+                </span>
+                <span *ngIf="extension.is_verified">
+                    <span *ngIf="extension.is_approved" class="mat-text-primary font-weight-bold">
+                        {{ 'APPROVED' | translate }}
+                    </span>
+                    <span *ngIf="!extension.is_approved" class="mat-text-warn font-weight-bold">
+                        {{ 'DENIED' | translate }}
+                    </span>
+                </span>
+            </p>
+        </div>
+
+        <div class="text-df" *ngIf="extension.is_verified && extension.userVerifier">
+            <strong>{{ 'REVIEWED_BY' | translate}}:</strong>
+            <p>{{ extension.userVerifier.profile.full_name }}</p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'POLICY' | translate}}:</strong>
+            <p class="app-render-nl">{{ extension.policy }}</p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'APPLICATION_REASONING' | translate}}:</strong>
+            <p class="app-render-nl">{{ extension.application_reasoning }}</p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'GUESTS_COLLATERAL_DAMAGE' | translate}}:</strong>
+            <p class="app-render-nl">{{ extension.guests_collateral_damage }}</p>
+        </div>
+
+        <!-- notification file -->
+        <div class="pt-2"></div>
+        <hr class="mb-2">
+        <div fxLayout="row" fxLayoutGap="100px" fxLayoutAlign="space-between">
+            <div *ngIf="extension.document_file" class="app-img-wrapper left">
+                <strong>{{ 'DOCUMENT' | translate}}:</strong>
+                <span *ngIf="!extension.document_file">
+                        {{ 'FILE_NOT_LOADED' | translate }}
+                    </span>
+                <br>
+
+                <a (click)="fileViewerProvider.load(extension.document_file)">
+                    {{ extension.document_file.name }}
+                    <mat-icon color="primary">visibility</mat-icon>
+
+                    <div *ngIf="extension.document_file.is_image && extension.document_file.media">
+                        <img [src]='extension.document_file.media["small"].url' alt="" class="app-img">
+                    </div>
+                    <div *ngIf="extension.document_file.is_image && !extension.document_file.media">
+                        <img [src]='extension.document_file.url' alt="" class="app-img">
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- created_at and updated_at section -->
+        <div class="row-dates-wrapper pt-2">
+            <hr>
+            <div class="pt-1 pb-1">
+                <p>
+                    <strong>{{ 'CREATED_AT' | translate}}: </strong>
+                    {{ dateProvider.fromUTCtoTZ(extension.created_at) | amDateFormat: 'YYYY-MM-DD h:mm a' }}
+                </p>
+                <p>
+                    <strong>{{ 'UPDATED_AT' | translate}}: </strong>
+                    {{ dateProvider.fromUTCtoTZ(extension.updated_at) | amDateFormat: 'YYYY-MM-DD h:mm a' }}
+                </p>
+            </div>
+            <hr>
+        </div>
+
+
+        <!-- bottom actions -->
+        <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start" class="pt-2 app-bottom-actions">
+            <button mat-raised-button color="primary" (click)="approve()">
+                {{ ('APPROVE' | translate) }}
+            </button>&nbsp;
+            <button mat-raised-button color="warn" (click)="deny()">
+                {{ ('DENY' | translate) }}
+            </button>
+        </div>
+        <div class="font-weight-bold" *ngIf="extension.is_verified">
+            <div class="mat-text-primary" *ngIf="extension.is_approved">
+                {{ 'EXTENSION_REQUEST_APPROVED' | translate }}
+            </div>
+            <div class="mat-text-warn" *ngIf="!extension.is_approved">
+                {{ 'EXTENSION_REQUEST_DENIED' | translate }}
+            </div>
+        </div>
+
+
+    </mat-card>
+</mat-card-content>
+
+<app-loader [loading]="loading"></app-loader>

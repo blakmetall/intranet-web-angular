@@ -1,0 +1,159 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3">
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>{{ 'BRANDSITE' | translate }}</h1>
+            </div>
+            <hr>
+        </div>
+
+        <!-- search actions -->
+        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="15px">
+            <mat-form-field style="width: 100%;">
+                <input matInput #filter placeholder="{{ 'SEARCH' | translate }}" autocomplete="off">
+            </mat-form-field>
+
+            <div fxLayout="row">
+                <button mat-icon-button (click)="_dataSource.clear()" title="{{ 'RESET_SEARCH' | translate }}">
+                    <mat-icon >autorenew</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <mat-table [dataSource]="_dataSource" matSort >
+
+            <ng-container matColumnDef="is_enabled">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ 'ENABLED' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <button color="primary" mat-icon-button *ngIf="row.is_enabled">
+                        <mat-icon class="app-icon-small">check_circle_outline</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="!row.is_enabled">
+                        <mat-icon class="app-icon-small">cancel</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="logo">
+                <mat-header-cell *matHeaderCellDef>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="logo-cell">
+                    <div *ngIf="row.logo?.length && row.logo[0] && row.logo[0].is_image" class="logo-wrapper">
+                        <img [src]="row.logo[0].url" alt="" class="logo">
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>
+
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <strong>
+                        {{ row.name }}
+                    </strong>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+
+                <mat-cell *matCellDef="let row" class="text-xs-right">
+                    <span class="app-spacer"></span>
+
+                    <div *ngIf=" ! ( row.brandsiteSections && row.brandsiteSections.length )">
+                        <button mat-icon-button
+                                matTooltip="{{ 'EDIT' | translate }}"
+                                [routerLink]="['form/' + row.id]">
+                            <mat-icon class="app-icon-small">create</mat-icon> <!-- communication -->
+                        </button>
+                    </div>
+
+                    <div *ngIf="row.brandsiteSections && row.brandsiteSections.length">
+                        <button mat-icon-button
+                                matTooltip="{{ 'EDIT' | translate }}"
+                                [routerLink]="['form/' + row.id]">
+                            <mat-icon class="app-icon-small">create</mat-icon> <!-- EDIT -->
+                        </button>
+
+                        <button mat-icon-button
+                                matTooltip="{{ 'WEDDINGS' | translate }}"
+                                [routerLink]="['section/' + brandsiteSectionProvider.getID('weddings', row.brandsiteSections) ]"
+                                *ngIf="brandsiteSectionProvider.isEnabled('weddings', row.brandsiteSections)">
+                            <mat-icon class="app-icon-heart app-icon-small" svgIcon="app_heart"></mat-icon> <!-- weddings -->
+                        </button>
+
+                        <button mat-icon-button
+                                matTooltip="{{ 'COMMUNICATION' | translate }}"
+                                [routerLink]="['section/' + brandsiteSectionProvider.getID('communication', row.brandsiteSections) ]"
+                                *ngIf="brandsiteSectionProvider.isEnabled('communication', row.brandsiteSections)">
+                            <mat-icon class="app-icon-small">speaker_notes</mat-icon> <!-- communication -->
+                        </button>
+
+                        <button mat-icon-button
+                                matTooltip="{{ 'GROUPS' | translate }}"
+                                [routerLink]="['section/' + brandsiteSectionProvider.getID('groups', row.brandsiteSections) ]"
+                                *ngIf="brandsiteSectionProvider.isEnabled('groups', row.brandsiteSections)">
+                            <mat-icon class="app-icon-small">supervised_user_circle</mat-icon> <!-- groups -->
+                        </button>
+
+                        <button mat-icon-button
+                                matTooltip="{{ 'PICTURES' | translate }}"
+                                [routerLink]="['section/' + brandsiteSectionProvider.getID('pictures', row.brandsiteSections) ]"
+                                *ngIf="brandsiteSectionProvider.isEnabled('pictures', row.brandsiteSections)">
+                            <mat-icon class="app-icon-small">image</mat-icon> <!-- images -->
+                        </button>
+
+                        <button mat-icon-button
+                                matTooltip="{{ 'LOGOS' | translate }}"
+                                [routerLink]="['section/' + brandsiteSectionProvider.getID('logos', row.brandsiteSections) ]"
+                                *ngIf="brandsiteSectionProvider.isEnabled('logos', row.brandsiteSections)">
+                            <mat-icon class="app-icon-small">gesture</mat-icon> <!-- logos -->
+                        </button>
+
+                        <button mat-icon-button
+                                matTooltip="{{ 'MANUALS' | translate }}"
+                                [routerLink]="['section/' + brandsiteSectionProvider.getID('manuals', row.brandsiteSections) ]"
+                                *ngIf="brandsiteSectionProvider.isEnabled('manuals', row.brandsiteSections)">
+                            <mat-icon class="app-icon-small">library_books</mat-icon> <!-- manuals -->
+                        </button>
+
+                        <button mat-icon-button
+                                matTooltip="{{ 'MULTIMEDIA' | translate }}"
+                                [routerLink]="['section/' + brandsiteSectionProvider.getID('multimedia', row.brandsiteSections) ]"
+                                *ngIf="brandsiteSectionProvider.isEnabled('multimedia', row.brandsiteSections)">
+                            <mat-icon class="app-icon-small">video_library</mat-icon> <!-- multimedia -->
+                        </button>
+
+                        <button mat-icon-button
+                                matTooltip="{{ 'TYPOGRAPHIES' | translate }}"
+                                [routerLink]="['section/' + brandsiteSectionProvider.getID('typographies', row.brandsiteSections) ]"
+                                *ngIf="brandsiteSectionProvider.isEnabled('typographies', row.brandsiteSections)">
+                            <mat-icon class="app-icon-small">text_format</mat-icon> <!-- typographies -->
+                        </button>
+                    </div>
+
+
+                </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns" class="mat-grey-200"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator
+                #paginator
+                [pageIndex]="_db.pageIndex"
+                [length]="_db.totalItems"
+                [pageSizeOptions]="[20, 50, 100, 150, 200, 10]">
+
+        </mat-paginator>
+    </mat-card>
+
+</mat-card-content>

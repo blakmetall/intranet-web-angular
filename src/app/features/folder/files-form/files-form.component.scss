@@ -1,0 +1,23 @@
+@import "../../../../assets/styles/scss/components/upload";
+
+:host{
+  .app-drop-zone-container{
+    position: relative;
+
+    .app-upload-input{
+      position: absolute;
+      top: 15px;
+      right: 5px;
+    }
+
+    .app-drop-zone-wrapper{
+      min-height: 60px;
+      background: #f7f7f7;
+    }
+  }
+
+  .folder-files-form-groupal-actions{
+    position:relative;
+    top: -10px;
+  }
+}

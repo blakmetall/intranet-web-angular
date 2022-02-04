@@ -1,0 +1,22 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        {{ 'PREVIEW' | translate }}
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="pt-0 pl-1 pr-1 pb-1 mb-1">
+    <mat-card>
+        <mat-card-content>
+            <div *ngIf="file.is_image">
+                <img mat-list-avatar [src]="file.url" class="app-file-img">
+            </div>
+        </mat-card-content>
+    </mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button type="button" mat-raised-button mat-button-sm [mat-dialog-close]="true">
+        {{ 'CLOSE' | translate }}
+    </button>
+</mat-dialog-actions>
+

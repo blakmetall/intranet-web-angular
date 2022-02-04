@@ -1,0 +1,4 @@
+<div class="timezone-chip-container" *ngIf="timezone_date">
+    {{ timezone_date | amFromUtc | amTz: auth.getTimezone() | amLocale: translate.currentLang | amDateFormat: appProvider.dateTimeFormat }}
+
+</div>

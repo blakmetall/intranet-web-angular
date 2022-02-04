@@ -1,0 +1,21 @@
+@import '~@angular/material/theming';
+
+@import 'intranet/colors';
+
+$primary: mat-palette($mat-intranet);
+$accent:  mat-palette($mat-intranet, A200, A100, A400);
+$warn: mat-palette($mat-intranet-warn);
+$theme: mat-light-theme($primary, $accent, $warn);
+$background: map-get($theme, background);
+$foreground: map-get($theme, foreground);
+
+@include mat-core();
+
+$dark-primary: mat-palette($mat-blue-grey);
+$dark-accent:  mat-palette($mat-amber, A200, A100, A400);
+$dark-warn: mat-palette($mat-deep-orange);
+$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+$dark-background: map-get($dark-theme, background);
+$dark-foreground: map-get($dark-theme, foreground);
+
+$config: mat-typography-config();

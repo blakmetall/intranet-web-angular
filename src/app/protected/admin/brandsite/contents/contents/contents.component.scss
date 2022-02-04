@@ -1,0 +1,16 @@
+:host{
+  .logo-cell{
+
+    .logo-wrapper{
+      display: inline-block;
+      padding-top: 25px;
+      padding-bottom: 20px;
+
+      .logo{
+        width: 100%;
+        max-width: 100px;
+        display: inline-block;
+      }
+    }
+  }
+}

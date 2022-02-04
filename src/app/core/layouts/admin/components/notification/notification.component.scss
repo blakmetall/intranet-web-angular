@@ -1,0 +1,20 @@
+:host{
+
+  mat-nav-list{
+
+    padding-top: 0;
+
+    mat-list-item{
+      border-bottom: 1px solid rgba(31, 31, 31, 0.05);
+    }
+
+    .pending{
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .delete-icon:hover{
+      color: #cc6300;
+    }
+  }
+
+}

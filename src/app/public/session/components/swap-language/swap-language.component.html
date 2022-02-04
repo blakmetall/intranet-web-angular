@@ -1,0 +1,16 @@
+<div>
+    <button [matMenuTriggerFor]="langMenu" mat-icon-button class="ml-xs">
+        <mat-icon>language</mat-icon>
+    </button>
+
+    <mat-menu #langMenu="matMenu">
+        <button type="button" mat-menu-item (click)="setLanguage('en')">
+            {{ 'ENGLISH' | translate }}
+        </button>
+
+        <button type="button" mat-menu-item (click)="setLanguage('es')">
+            {{ 'SPANISH' | translate }}
+        </button>
+    </mat-menu>
+
+</div>

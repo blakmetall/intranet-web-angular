@@ -1,0 +1,100 @@
+
+<mat-dialog-content class="pt-2 pb-2">
+    <div fxLayout="row" fxLayoutAlign="center center" style="width: 100%; height: 100%;">
+        <div *ngIf="file" class="app-file-viewer-wrapper">
+
+            <div *ngIf="file.is_image">
+                <img *ngIf="file.media" [src]='file.media["medium"].url' class="app-img">
+                <img *ngIf="!file.media" [src]='file.url' class="app-img">
+            </div>
+
+            <div *ngIf=" !file.is_image && file.extension != 'pdf' ">
+                {{ 'THIS_FILE_CANT_BE_VISUALIZED' | translate }}
+            </div>
+
+            <div *ngIf=" !file.is_image && file.extension == 'pdf' ">
+                <a [href]="file.url" target="_blank" mat-raised-button color="primary">
+                    {{ 'OPEN_PDF' | translate }}
+                </a>
+            </div>
+
+        </div>
+        <div *ngIf="!file">
+            {{ 'FILE_NOT_FOUND' | translate }}
+        </div>
+    </div>
+
+    <div class="pb-2"></div>
+    <hr>
+    <div class="pt-2 detail-wrapper">
+
+        <div *ngIf="file.is_image && file.media">
+            <strong>{{ 'DOWNLOAD' | translate }}:</strong>
+            <div class="inline-block" style="padding-right: 5px;"></div>
+            <a [href]="download_url + '/8k'" target="_blank" class="file-extra-size" *ngIf="file.media['8k']">
+                {{ '8K' | translate }}
+            </a>
+
+            <a [href]="download_url + '/4k'" target="_blank" class="file-extra-size" *ngIf="file.media['4k']">
+                {{ '4K' | translate }}
+            </a>
+
+            <a [href]="download_url + '/8k'" target="_blank" class="file-extra-size" *ngIf="file.media['uhd']">
+                {{ 'UHD' | translate }}
+            </a>
+
+            <a [href]="download_url + '/full-hd'" target="_blank" class="file-extra-size" *ngIf="file.media['full-hd']">
+                {{ 'FULL_HD' | translate }}
+            </a>
+
+            <a [href]="download_url + '/hd'" target="_blank" class="file-extra-size" *ngIf="file.media['hd']">
+                {{ 'HD' | translate }}
+            </a>
+
+            <a [href]="download_url + '/sd'" target="_blank" class="file-extra-size" *ngIf="file.media['sd']">
+                {{ 'SD' | translate }}
+            </a>
+        </div>
+
+
+        <strong>{{ 'FILE_NAME' | translate }}:</strong> {{ file.name }} <br>
+
+
+        <!-- file sizes -->
+        <strong>{{ 'FILE_SIZE' | translate }}:</strong>
+        <span *ngIf="file.size_bytes < 1000">
+            {{ file.size_bytes }} Bytes
+        </span>
+        <span *ngIf="file.size_bytes >= 1000 && file.size_bytes < (1000 * 1000)">
+            {{ (file.size_bytes / 1000).toFixed(2) }} KB
+        </span>
+        <span *ngIf="file.size_bytes >= (1000 * 1000) && file.size_bytes < (1000 * 1000 * 1000)">
+            {{ ((file.size_bytes / 1000) / 1000).toFixed(2) }} MB
+        </span>
+        <span *ngIf="file.size_bytes >= (1000 * 1000 * 1000) && file.size_bytes >= (1000 * 1000 * 1000 * 1000)">
+            {{ (((file.size_bytes / 1000) / 1000) / 1000).toFixed(2) }} GB
+        </span>
+        <br>
+
+        <div *ngIf="file.is_image && file.extension != 'svg'">
+            <strong>{{ 'FILE_DIMENSIONS' | translate }}:</strong> {{ file.width}} x {{file.height}}
+        </div>
+
+        <strong>{{ 'FILE_EXT' | translate }}:</strong> {{ file.extension }} <br>
+
+        <strong>{{ 'FILE_VERSION' | translate }}:</strong> {{ file.version }} <br>
+        <strong>{{ 'CREATED_AT' | translate }}:</strong> {{ dateProvider.fromUTCtoTZ(file.created_at) | amDateFormat: 'YYYY-MM-DD h:mm a' }}<br>
+        <strong>{{ 'UPDATED_AT' | translate }}:</strong> {{ dateProvider.fromUTCtoTZ(file.updated_at) | amDateFormat: 'YYYY-MM-DD h:mm a' }}
+    </div>
+</mat-dialog-content>
+
+<hr>
+<mat-dialog-actions align="center" class="pt-2 pb-2">
+    <a [href]="download_url" target="_blank" mat-raised-button color="primary">
+        {{ 'DOWNLOAD' | translate }}
+    </a>
+
+    <button mat-button color="secondary" (click)="close()">
+        {{ 'CLOSE' | translate }}
+    </button>
+</mat-dialog-actions>

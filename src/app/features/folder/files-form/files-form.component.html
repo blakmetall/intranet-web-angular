@@ -1,0 +1,183 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <span>{{ 'FILE_UPLOADER' | translate }}</span>
+    </mat-toolbar-row>
+
+    <!-- queue progress -->
+    <mat-progress-bar mode="determinate" value="{{uploader.progress}}"></mat-progress-bar>
+</mat-toolbar>
+
+<mat-dialog-content>
+    <mat-card-content>
+
+        <div class="app-drop-zone-container mt-1 mb-3">
+            <div ng2FileDrop [uploader]="uploader" class="nv-file-over my-drop-zone app-drop-zone-wrapper mb-1">
+                {{ 'DROP_ZONE' | translate }}
+                <input type="file" ng2FileSelect [uploader]="uploader" multiple class="app-upload-input"/>
+            </div>
+        </div>
+
+        <div class="queue-container">
+            <h4 class="mt-0"  fxLayout="row">
+            <span fxFlex>
+                {{ 'UPLOAD_QUEUE' | translate }}
+                <span *ngIf="uploader?.queue?.length">
+                    : {{ uploader?.queue?.length }}
+                </span>
+            </span>
+
+                <!-- grupal actions -->
+                <div class="text-right folder-files-form-groupal-actions" >
+                    <div class="inline-block"></div>
+
+                    <button mat-icon-button
+                            matTooltip="{{ 'UPLOAD_ALL' | translate }}"
+                            color="primary"
+                            type="button"
+                            (click)="uploadAll()"
+                            [disabled]="!uploader.getNotUploadedItems().length">
+                        <mat-icon>cloud_upload</mat-icon>
+                    </button>
+                    <button mat-icon-button
+                            matTooltip="{{ 'CANCEL_ALL' | translate }}"
+                            color="warn"
+                            type="button"
+                            (click)="cancelAll()"
+                            [disabled]="!uploader.isUploading">
+                        <mat-icon>cloud_off</mat-icon>
+                    </button>
+                    <button mat-icon-button
+                            matTooltip="{{ 'CLEAR_QUEUE' | translate }}"
+                            type="button"
+                            (click)="clearQueue()"
+                            [disabled]="!uploader.queue.length">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </div>
+            </h4>
+
+            <div *ngIf="uploader.queue?.length && folderProvider.features.length">
+                <h4 class="mt-0"  fxLayout="row" >
+                    <span fxFlex></span>
+
+                    <div [formGroup]="form" class="text-right" style="padding-right: 10px;">
+
+                        <!-- featured checkbox -->
+                        <div class="app-checkbox-container">
+                            <mat-checkbox color="primary" [formControl]="form.get('is_featured')" labelPosition="before">
+                                {{ 'FEATURED' | translate }}
+                                <mat-icon class="app-inline-icon">star</mat-icon>
+                            </mat-checkbox>
+                        </div>
+
+                        <!-- flip page -->
+                        <div class="app-checkbox-container">
+                            <mat-checkbox color="primary" [formControl]="form.get('flip_page_enabled')" labelPosition="before">
+                                {{ 'FLIP_PAGE' | translate }}
+                                <mat-icon class="app-inline-icon">view_carousel</mat-icon>
+                            </mat-checkbox>
+                        </div>
+
+                        <hr class="mb-1">
+
+                        <!-- features list -->
+                        <div *ngFor="let feature of form.get('features')['controls']; let i=index">
+                            <div [formGroup]="feature" class="app-checkbox-container">
+                                <mat-checkbox formControlName="enabled" color="primary" labelPosition="before">
+                                <span *ngIf="translate.currentLang == 'es'">
+                                    {{ feature.get('name_es').value}}
+                                </span>
+                                    <span *ngIf="translate.currentLang == 'en'">
+                                    {{ feature.get('name_en').value}}
+                                </span>
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </h4>
+            </div>
+
+            <!-- upload queue table -->
+            <ngx-datatable
+                    class="material ml-0 mr-0"
+                    [rows]="uploader.queue"
+                    [columnMode]="'flex'"
+                    [headerHeight]="50"
+                    [footerHeight]="0"
+                    [rowHeight]="'auto'">
+
+                <ngx-datatable-column name="{{ 'FILENAME' | translate }}" [flexGrow]="1" [minWidth]="250">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{ row?.file?.name }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'SIZE' | translate }}" *ngIf="uploader.options.isHTML5" [flexGrow]="1">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{ row?.file?.size/1024/1024 | number:'.2' }} MB
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'PROGRESS' | translate }}" *ngIf="uploader.options.isHTML5" [flexGrow]="1">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        <mat-progress-bar mode="determinate" value="{{row.progress}}"></mat-progress-bar>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'STATUS' | translate }}" [flexGrow]="1">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span *ngIf="row.isSuccess">
+                        <mat-icon color="primary">cloud_done</mat-icon>
+                    </span>
+                        <span *ngIf="row.isCancel">
+                        <mat-icon color="warn">cloud_off</mat-icon>
+                    </span>
+                        <span *ngIf="row.isError">
+                        <mat-icon color="warn">error</mat-icon>
+                    </span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'ACTIONS' | translate }}" [flexGrow]="1" [minWidth]="230">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+
+                        <button mat-icon-button
+                                matTooltip="{{ 'UPLOAD' | translate }}"
+                                color="primary"
+                                type="button"
+                                (click)="row.upload()"
+                                [disabled]="row.isReady || row.isUploading || row.isSuccess">
+                            <mat-icon>cloud_upload</mat-icon>
+                        </button>
+
+                        <button mat-icon-button
+                                matTooltip="{{ 'CANCEL' | translate }}"
+                                color="warn" type="button"
+                                (click)="row.cancel()"
+                                [disabled]="!row.isUploading">
+                            <mat-icon>cloud_off</mat-icon>
+                        </button>
+
+                        <button mat-icon-button
+                                matTooltip="{{ 'REMOVE' | translate }}"
+                                type="button"
+                                (click)="removeFromQueue(row)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+
+                    </ng-template>
+                </ngx-datatable-column>
+
+            </ngx-datatable>
+
+        </div>
+
+    </mat-card-content>
+</mat-dialog-content>
+
+
+<mat-dialog-actions>
+    <button type="button" mat-raised-button mat-button-sm [mat-dialog-close]="true">
+        {{ 'CLOSE' | translate }}
+    </button>
+</mat-dialog-actions>

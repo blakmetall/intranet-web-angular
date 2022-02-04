@@ -1,0 +1,19 @@
+:host{
+  .app-img{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 100%;
+  }
+  .file-extra-size{
+    display: inline-block;
+    color: #7e5088;
+    margin-right: 10px;
+    text-decoration: underline;
+  }
+  .detail-wrapper{
+    color: #555;
+
+    strong{
+      color: #212121;
+    }
+  }
+}

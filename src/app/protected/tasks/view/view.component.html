@@ -1,0 +1,118 @@
+<mat-card-content>
+    <mat-card class="pa-2 mb-3" *ngIf="task">
+
+
+        <!-- heading -->
+        <div class="app-heading-wrapper pb-2">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+                <h1>
+                    {{ task.name }}
+                    <span class="subtitle">
+                        {{ 'TASK' | translate }}
+                    </span>
+                </h1>
+                <div>
+                    <button mat-icon-button title="{{ 'NEW' | translate }}"  [routerLink]="['/tasks/form']">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+
+                    <button mat-icon-button title="{{ 'RETURN_TO_LIST' | translate }}"  [routerLink]="['/tasks']">
+                        <mat-icon>list</mat-icon>
+                    </button>
+
+                    <button mat-icon-button title="{{ 'RETURN_TO_ARCHIVED' | translate }}"  [routerLink]="['/tasks/archive']">
+                        <mat-icon>archive</mat-icon>
+                    </button>
+
+                    <button mat-icon-button title="{{ 'RETURN_TO_CALENDAR' | translate }}"  [routerLink]="['/calendar']">
+                        <mat-icon>event</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+
+
+        <div class="text-df">
+            <strong>{{ 'CREATED_BY' | translate }}:</strong>
+            <p>
+                {{ task.userOwner?.profile?.full_name }}
+            </p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'ASSIGNED_USER' | translate }}:</strong>
+            <p>
+                {{ task.userAssigned?.profile?.full_name }}
+            </p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'STATUS' | translate }}:</strong>
+            <p>
+                {{ task.status?.name | translate }}
+            </p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'START_DATE' | translate }}:</strong>
+            <p>
+                {{ task.start_date }}
+            </p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'END_DATE' | translate }}:</strong>
+            <p>
+                {{ task.end_date }}
+            </p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'IS_PINNED_TO_CALENDAR' | translate }}:</strong>
+            <p>
+                <span *ngIf="task.is_pinned_to_calendar">{{ 'YES' | translate}}</span>
+                <span *ngIf="!task.is_pinned_to_calendar">{{ 'NO' | translate}}</span>
+            </p>
+        </div>
+
+        <div class="text-df">
+            <strong>{{ 'DESCRIPTION' | translate }}:</strong>
+            <p class="app-render-nl">{{ task.description }}</p>
+        </div>
+
+        <!-- created_at and updated_at section -->
+        <div class="row-dates-wrapper pt-2">
+            <hr>
+            <div class="pt-1 pb-1">
+                <p>
+                    <strong>{{ 'CREATED_AT' | translate}}: </strong>
+                    {{ dateProvider.fromUTCtoTZ(task.created_at) | amDateFormat: 'YYYY-MM-DD h:mm a' }}
+                </p>
+                <p>
+                    <strong>{{ 'UPDATED_AT' | translate}}: </strong>
+                    {{ dateProvider.fromUTCtoTZ(task.updated_at) | amDateFormat: 'YYYY-MM-DD h:mm a' }}
+                </p>
+            </div>
+            <hr>
+        </div>
+
+
+        <!-- bottom actions -->
+        <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start" class="pt-2 app-bottom-actions">
+            <button mat-raised-button mat-button-sm color="primary"
+                    [routerLink]="['/tasks/form/' + task.id]">
+                {{ 'EDIT' | translate }}
+            </button>
+
+            <button mat-raised-button mat-button-sm color="warn"
+                    (click)="delete(task)">
+                {{ 'DELETE' | translate }}
+            </button>
+        </div>
+
+    </mat-card>
+</mat-card-content>
+
+<app-loader [loading]="loading"></app-loader>
